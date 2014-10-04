@@ -1,0 +1,11 @@
+---
+title: 資訊安全導論作業一
+---
+
+= form_tag '#' do
+  = field_set_tag do 
+    = text_field_tag 'plaintext'
+  = field_set_tag do
+    = submit_tag 'Cipher!', :onclick => 'cipher(this.form)'
+
+#ciphered_text

@@ -16,3 +16,5 @@ gem "tzinfo-data", platforms: [:mswin, :mingw]
 gem 'middleman-deploy', '~> 0.3.0'
 
 gem "susy"
+
+gem "jquery-middleman"
