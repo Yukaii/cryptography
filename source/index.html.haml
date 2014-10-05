@@ -1,11 +1,38 @@
 ---
 title: 資訊安全導論作業一
 ---
+%h1 資訊安全導論作業一
 
-= form_tag '/', :id => 'form' do
+%h2 Caesar Cipher
+= form_tag '/', :id => 'caesar-form' do
   = field_set_tag do 
-    = text_field_tag 'plaintext'
+    = text_field_tag 'plaintext', :value => 'distributed anonymous'
+    %select{:name => 'shift'}
+      - for i in 0...27
+        - if i != 5
+          %option{:value => "#{i}"}= "#{i}"
+        - else
+          %option{:value => "#{i}", :selected => 'selected'}= "#{i}"
+
   = field_set_tag do
     = submit_tag 'Cipher!', :onclick => 'cipher()'
+  .ciphered_text
 
-#ciphered_text
+%h2 Monoalphabetic Cipher
+= form_tag '/', :id => 'mono-form' do
+  = field_set_tag do 
+    = text_field_tag 'plaintext', :value => 'distributed anonymous'
+  = field_set_tag do
+    = submit_tag 'Cipher!', :onclick => 'cipher()'
+  .ciphered_text
+
+%h2 Playfair Cipher
+= form_tag '/', :id => 'playfair-form' do
+  = field_set_tag do 
+    = text_field_tag 'plaintext', :value => 'distributed'
+    %br
+    key:
+    = text_field_tag 'key', :value => 'proclam'
+  = field_set_tag do
+    = submit_tag 'Cipher!', :onclick => 'cipher()'
+  .ciphered_text 
