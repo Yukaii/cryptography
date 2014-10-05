@@ -1,3 +1,10 @@
+##
+# Bower
+##
+ 
+@bower_config = JSON.parse(IO.read("#{root}/.bowerrc"))
+ignore @bower_config["directory"].gsub(/source\//, "") + '/*'
+
 ###
 # Compass
 ###
@@ -6,6 +13,11 @@
 # compass_config do |config|
 #   config.output_style = :compact
 # end
+
+# Add bower's directory to sprockets asset path
+sprockets.append_path File.join "#{root}", @bower_config["directory"]
+sprockets.append_path File.join root, 'source/bower_components'
+sprockets.import_asset 'jquery/dist/jquery.js'
 
 ###
 # Page options, layouts, aliases and proxies

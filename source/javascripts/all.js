@@ -1,2 +1,2 @@
 //= require_tree .
-//= require jquery
+//= require "jquery/dist/jquery.js"
