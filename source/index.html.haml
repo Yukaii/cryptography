@@ -36,3 +36,26 @@ title: 資訊安全導論作業一
   = field_set_tag do
     = submit_tag 'Cipher!', :onclick => 'cipher()'
   .ciphered_text 
+
+
+%h2 Vername proposed the autokey system
+= form_tag '/', :id => 'vernam-form' do
+  = field_set_tag do 
+    = text_field_tag 'plaintext', :value => 'this'
+    %br
+    key:
+    = text_field_tag 'key', :value => 'pro'
+  = field_set_tag do
+    = submit_tag 'Cipher!', :onclick => 'cipher()'
+  .ciphered_text 
+
+%h2 Row transposition
+= form_tag '/', :id => 'row-form' do
+  = field_set_tag do 
+    = text_field_tag 'plaintext', :value => 'distributed anonymous'
+    %br
+    key:
+    = text_field_tag 'key', :value => '85167234'
+  = field_set_tag do
+    = submit_tag 'Cipher!', :onclick => 'cipher()'
+  .ciphered_text 
