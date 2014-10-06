@@ -1,0 +1,178 @@
+/* line 4, /Users/yukai/Projects/web/cryptography/source/stylesheets/style.css.scss */
+body {
+  margin-top: 50px; }
+
+/* line 8, /Users/yukai/Projects/web/cryptography/source/stylesheets/style.css.scss */
+.block {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  position: relative; }
+  /* line 12, /Users/yukai/Projects/web/cryptography/source/stylesheets/style.css.scss */
+  .block .caesar {
+    margin-top: 3em;
+    padding: 15em 0 11em 0; }
+    /* line 16, /Users/yukai/Projects/web/cryptography/source/stylesheets/style.css.scss */
+    .block .caesar::before {
+      content: " ";
+      background-image: url("../images/ceasar-1.jpg");
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-position: 10% 0;
+      position: absolute;
+      top: 0%;
+      left: 0;
+      width: 100%;
+      height: 800px;
+      z-index: -1; }
+    /* line 17, /Users/yukai/Projects/web/cryptography/source/stylesheets/mixin.css.scss */
+    .block .caesar h2 {
+      margin-bottom: 2em;
+      color: white;
+      text-shadow: black 1px 1px 20px, black -1px -1px 20px; }
+    /* line 23, /Users/yukai/Projects/web/cryptography/source/stylesheets/mixin.css.scss */
+    .block .caesar .ciphered_text {
+      color: white;
+      text-shadow: black 1px 1px 20px, black -1px -1px 20px; }
+  /* line 23, /Users/yukai/Projects/web/cryptography/source/stylesheets/style.css.scss */
+  .block .mono {
+    padding: 15em 0 11em 0; }
+    /* line 27, /Users/yukai/Projects/web/cryptography/source/stylesheets/style.css.scss */
+    .block .mono::before {
+      content: " ";
+      background-image: url("../images/matrix.png");
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-position: 10% 0;
+      position: absolute;
+      top: 0%;
+      left: 0;
+      width: 100%;
+      height: 800px;
+      z-index: -1; }
+    /* line 17, /Users/yukai/Projects/web/cryptography/source/stylesheets/mixin.css.scss */
+    .block .mono h2 {
+      margin-bottom: 2em;
+      color: white;
+      text-shadow: black 1px 1px 20px, black -1px -1px 20px; }
+    /* line 23, /Users/yukai/Projects/web/cryptography/source/stylesheets/mixin.css.scss */
+    .block .mono .ciphered_text {
+      color: white;
+      text-shadow: black 1px 1px 20px, black -1px -1px 20px; }
+  /* line 33, /Users/yukai/Projects/web/cryptography/source/stylesheets/style.css.scss */
+  .block .playfair {
+    padding: 15em 0 11em 0; }
+    /* line 36, /Users/yukai/Projects/web/cryptography/source/stylesheets/style.css.scss */
+    .block .playfair::before {
+      content: " ";
+      background-image: url("../images/beauty.jpg");
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-position: 10% 0;
+      position: absolute;
+      top: 0%;
+      left: 0;
+      width: 100%;
+      height: 800px;
+      z-index: -1; }
+    /* line 17, /Users/yukai/Projects/web/cryptography/source/stylesheets/mixin.css.scss */
+    .block .playfair h2 {
+      margin-bottom: 2em;
+      color: white;
+      text-shadow: black 1px 1px 20px, black -1px -1px 20px; }
+    /* line 23, /Users/yukai/Projects/web/cryptography/source/stylesheets/mixin.css.scss */
+    .block .playfair .ciphered_text {
+      color: white;
+      text-shadow: black 1px 1px 20px, black -1px -1px 20px; }
+  /* line 42, /Users/yukai/Projects/web/cryptography/source/stylesheets/style.css.scss */
+  .block .vernam {
+    padding: 15em 0 11em 0; }
+    /* line 45, /Users/yukai/Projects/web/cryptography/source/stylesheets/style.css.scss */
+    .block .vernam::before {
+      content: " ";
+      background-image: url("../images/water.jpg");
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-position: 10% 0;
+      position: absolute;
+      top: 0%;
+      left: 0;
+      width: 100%;
+      height: 800px;
+      z-index: -1; }
+    /* line 17, /Users/yukai/Projects/web/cryptography/source/stylesheets/mixin.css.scss */
+    .block .vernam h2 {
+      margin-bottom: 2em;
+      color: white;
+      text-shadow: black 1px 1px 20px, black -1px -1px 20px; }
+    /* line 23, /Users/yukai/Projects/web/cryptography/source/stylesheets/mixin.css.scss */
+    .block .vernam .ciphered_text {
+      color: white;
+      text-shadow: black 1px 1px 20px, black -1px -1px 20px; }
+  /* line 51, /Users/yukai/Projects/web/cryptography/source/stylesheets/style.css.scss */
+  .block .row {
+    padding: 15em 0 11em 0; }
+    /* line 54, /Users/yukai/Projects/web/cryptography/source/stylesheets/style.css.scss */
+    .block .row::before {
+      content: " ";
+      background-image: url("../images/sceneary.jpg");
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-position: 10% 0;
+      position: absolute;
+      top: 0%;
+      left: 0;
+      width: 100%;
+      height: 800px;
+      z-index: -1; }
+    /* line 17, /Users/yukai/Projects/web/cryptography/source/stylesheets/mixin.css.scss */
+    .block .row h2 {
+      margin-bottom: 2em;
+      color: white;
+      text-shadow: black 1px 1px 20px, black -1px -1px 20px; }
+    /* line 23, /Users/yukai/Projects/web/cryptography/source/stylesheets/mixin.css.scss */
+    .block .row .ciphered_text {
+      color: white;
+      text-shadow: black 1px 1px 20px, black -1px -1px 20px; }
+  /* line 60, /Users/yukai/Projects/web/cryptography/source/stylesheets/style.css.scss */
+  .block .product {
+    padding: 15em 0 11em 0; }
+    /* line 63, /Users/yukai/Projects/web/cryptography/source/stylesheets/style.css.scss */
+    .block .product::before {
+      content: " ";
+      background-image: url("../images/nisekoi.png");
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-position: 10% 0;
+      position: absolute;
+      top: 0%;
+      left: 0;
+      width: 100%;
+      height: 800px;
+      z-index: -1;
+      height: 650px; }
+    /* line 17, /Users/yukai/Projects/web/cryptography/source/stylesheets/mixin.css.scss */
+    .block .product h2 {
+      margin-bottom: 2em;
+      color: white;
+      text-shadow: black 1px 1px 20px, black -1px -1px 20px; }
+    /* line 23, /Users/yukai/Projects/web/cryptography/source/stylesheets/mixin.css.scss */
+    .block .product .ciphered_text {
+      color: white;
+      text-shadow: black 1px 1px 20px, black -1px -1px 20px; }
+  /* line 71, /Users/yukai/Projects/web/cryptography/source/stylesheets/style.css.scss */
+  .block .ciphered_text {
+    height: 4em; }
+
+/* line 78, /Users/yukai/Projects/web/cryptography/source/stylesheets/style.css.scss */
+.footer {
+  left: 0px;
+  right: 0px;
+  padding-top: 1em;
+  padding-bottom: 1em;
+  background-color: #8D2F2F;
+  margin-top: -10px; }
+  /* line 79, /Users/yukai/Projects/web/cryptography/source/stylesheets/style.css.scss */
+  .footer p {
+    margin: 0;
+    color: #b0b0b0; }
