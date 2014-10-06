@@ -4,7 +4,7 @@
 
 @cipher = -> 
 # ---------------------------------------------------------- #
-#   CAESAR CIPHER                                            #
+#   1. CAESAR CIPHER                                         
 # ---------------------------------------------------------- #
 	$('#caesar-form').submit (event) ->
 		# handle form only useing jQuery
@@ -45,7 +45,7 @@
 			ciphered_text += char
 		return ciphered_text
 # ----------------------------------------------------------- #
-#   Monoalphabetic cipher                                     #
+#   2. Monoalphabetic cipher                                  #
 # ----------------------------------------------------------- #
 
 	$('#mono-form').submit (event) -> 
@@ -88,7 +88,7 @@
 		return ciphered_text
 
 # ----------------------------------------------------------- #
-#   Playfair cipher
+#   3. Playfair cipher
 #   reference algorithm: 
 #   http://practicalcryptography.com/ciphers/playfair-cipher/
 # ----------------------------------------------------------- #
@@ -204,7 +204,7 @@
 		return ciphered_text
 
 # ---------------------------------------------------------- #
-#   Vernam Cipher                                            #
+#   4. Vernam Cipher                                         #
 # ---------------------------------------------------------- #
 
 	$('#vernam-form').submit (event) -> 
@@ -234,7 +234,7 @@
 		return ciphered_text
 
 # ---------------------------------------------------------- #
-#   Row Transposition                                        #
+#   5. Row Transposition                                     #
 # ---------------------------------------------------------- #
 	$('#row-form').submit (event) -> 
 		event.preventDefault()
@@ -245,5 +245,21 @@
 		ct = $("#row-form .ciphered_text").get(0)
 		ct.innerHTML = "#{ciphered_text}"
 
-	row = ->
-		
+	row = (plaintext = "distributed anonymous", key = "85167234")->
+		key_length = key.length
+		order = []
+		for i in key
+			order.push(parseInt(i))
+
+
+		plaintext = plaintext.replace(/\s/g, "").replace(/[^a-z]/g, "").replace(/[j]/g, "i")
+			
+		ciphered_text = ""
+		for i in [1..order.length]
+			index = order.indexOf(i)
+			for j in [index..plaintext.length-1] by 8
+				ciphered_text += plaintext[j]
+
+
+		return ciphered_text
+
