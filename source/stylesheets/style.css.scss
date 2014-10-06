@@ -11,7 +11,7 @@ body {
 
   .caesar {
     margin-top: 3em;
-    padding: 15em 0 13em 0;
+    padding: 15em 0 11em 0;
     // background-color: #A0FFBE;
     &::before {
       @include block-bg("ceasar-1.jpg");
@@ -21,7 +21,7 @@ body {
   }
 
   .mono {
-    padding: 15em 0 13em 0;
+    padding: 15em 0 11em 0;
     // background-color: #9DE7FF;
 
     &::before {
@@ -31,7 +31,7 @@ body {
   }
 
   .playfair {
-    padding: 15em 0 13em 0;
+    padding: 15em 0 11em 0;
     // background-color: #FFFFFF;
     &::before {
       @include block-bg("beauty.jpg");
@@ -40,7 +40,7 @@ body {
   }
 
   .vernam {
-    padding: 15em 0 13em 0;
+    padding: 15em 0 11em 0;
     // background-color: #8c8c8c;  
     &::before {
       @include block-bg("water.jpg");
@@ -49,7 +49,7 @@ body {
   }
 
   .row {
-    padding: 15em 0 13em 0;
+    padding: 15em 0 11em 0;
     // background-color: #F69BD9;    
     &::before {
       @include block-bg("sceneary.jpg");
@@ -58,8 +58,14 @@ body {
   }
 
   .product {
-    padding: 6em 0 4em 0;
-    background-color: #EBF69B; 
+    padding: 15em 0 11em 0;
+    // background-color: #F69BD9;    
+    &::before {
+      @include block-bg("nisekoi.png");
+      height: 650px;
+    }
+    @include white-h2-ciphered();    
+    // background-color: #EBF69B; 
   }
 
   .ciphered_text {
@@ -74,8 +80,12 @@ body {
     margin: 0;
     color: #b0b0b0;
   }
-
-  padding: 1em;
+  // position: absolute;
+  left: 0px;
+  right: 0px;
+  padding-top: 1em;
+  padding-bottom: 1em;
   background-color: #8D2F2F;
+  margin-top: -10px;
   
 }
