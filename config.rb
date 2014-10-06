@@ -81,7 +81,7 @@ configure :build do
   # Enable cache buster
   # activate :asset_hash
 
-  Use relative URLs
+  # Use relative URLs
   activate :relative_assets
 
   # To enable relative paths to assets via compass helper functions. Uncomment:

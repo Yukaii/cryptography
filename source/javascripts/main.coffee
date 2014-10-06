@@ -218,21 +218,36 @@
 		ct.innerHTML = "#{ciphered_text}"
 
 	vernam = (plaintext = "this", key = "pro") ->
+		plaintext = plaintext.replace(/\s/g, "").replace(/[^a-z]/g, "").replace(/[j]/g, "i")
+
 		autokey = ""
 		autokey += key
 
 		# complete the rest of autokey
 		left = plaintext.length - key.length
 		for i in [0..left-1]
-			autokey += plaintext[i]
-
-		plaintext = plaintext.replace(/\s/g, "").replace(/[^a-z]/g, "").replace(/[j]/g, "i")
+			autokey += plaintext[i]		
 
 		ciphered_text = ""
+
 		for i in [0..plaintext.length-1]
-			ciphered_text += caesar(plaintext[i], autokey[i].charCodeAt(0) - 65)
+			text_code = (plaintext.charCodeAt(i) - 97).toString(2)
+			key_code = (autokey.charCodeAt(i) - 97).toString(2)
+
+			ciphered_code_string = ""
+			
+			for j in [0..text_code.length-1]
+				ciphered_code_string += parseInt(text_code[j]) ^ parseInt(key_code[j])
+			
+			ciphered_text += String.fromCharCode(parseInt(ciphered_code_string, 2) + 97)
 
 		return ciphered_text
+
+		# xor = (str1, str2) -> 
+		# 	output = ""
+		# 	for i in [0..str1.length-1]
+		# 		str1[i]
+
 
 # ---------------------------------------------------------- #
 #   5. Row Transposition                                     #

@@ -1,34 +1,60 @@
 @import "compass";
+@import "mixin";
+
 body {
   margin-top: 50px;
 }
 
 .block {
   @include box-sizing(border-box);
+  position: relative;
+
   .caesar {
     margin-top: 3em;
-    padding: 6em 0 4em 0;
-    background-color: #A0FFBE;
+    padding: 15em 0 13em 0;
+    // background-color: #A0FFBE;
+    &::before {
+      @include block-bg("ceasar-1.jpg");
+    }
+
+    @include white-h2-ciphered();
   }
 
   .mono {
-    padding: 6em 0 4em 0;
-    background-color: #9DE7FF;
+    padding: 15em 0 13em 0;
+    // background-color: #9DE7FF;
+
+    &::before {
+      @include block-bg("matrix.png");
+    }
+    @include white-h2-ciphered();
   }
 
   .playfair {
-    padding: 6em 0 4em 0;
-    background-color: #FFFFFF;    
+    padding: 15em 0 13em 0;
+    // background-color: #FFFFFF;
+    &::before {
+      @include block-bg("beauty.jpg");
+    }
+    @include white-h2-ciphered();  
   }
 
   .vernam {
-    padding: 6em 0 4em 0;
-    background-color: #8c8c8c;       
+    padding: 15em 0 13em 0;
+    // background-color: #8c8c8c;  
+    &::before {
+      @include block-bg("water.jpg");
+    }
+    @include white-h2-ciphered();          
   }
 
   .row {
-    padding: 6em 0 4em 0;
-    background-color: #F69BD9;    
+    padding: 15em 0 13em 0;
+    // background-color: #F69BD9;    
+    &::before {
+      @include block-bg("sceneary.jpg");
+    }
+    @include white-h2-ciphered();    
   }
 
   .product {
@@ -46,9 +72,10 @@ body {
 .footer {
   p {
     margin: 0;
+    color: #b0b0b0;
   }
 
   padding: 1em;
   background-color: #8D2F2F;
-  color: white;
+  
 }
