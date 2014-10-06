@@ -59,3 +59,11 @@ title: 資訊安全導論作業一
   = field_set_tag do
     = submit_tag 'Cipher!', :onclick => 'cipher()'
   .ciphered_text 
+
+%h2 Product Cipher
+= form_tag '/', :id => 'product-form' do
+  = field_set_tag do 
+    = text_field_tag 'plaintext', :value => 'distributed anonymous'
+  = field_set_tag do
+    = submit_tag 'Cipher!', :onclick => 'cipher()'
+  .ciphered_text   

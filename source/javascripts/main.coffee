@@ -44,6 +44,7 @@
 			char = String.fromCharCode(charCode)
 			ciphered_text += char
 		return ciphered_text
+
 # ----------------------------------------------------------- #
 #   2. Monoalphabetic cipher                                  #
 # ----------------------------------------------------------- #
@@ -262,4 +263,33 @@
 
 
 		return ciphered_text
+
+# ---------------------------------------------------------- #
+#   6. Product Cipher                                    
+# ---------------------------------------------------------- #
+
+	$('#product-form').submit (event) -> 
+		event.preventDefault()
+		plaintext = $("#product-form input[name ='plaintext']").val()  
+		key = $("#product-form input[name ='key']").val()
+		ciphered_text = product(plaintext, key)
+
+		ct = $("#product-form .ciphered_text").get(0)
+		ct.innerHTML = "#{ciphered_text}"
+
+	# 15 11 19 18 16  3  7 14  2 20
+	#  4 12  9  6  1  5 17 13 10  8
+	product = (plaintext = "distributed anonymous")->
+
+		order = [15, 11, 19, 18, 16,  3,  7, 14,  2, 20,  4, 12,  9,  6,  1,  5, 17, 13, 10,  8]
+
+		plaintext = plaintext.replace(/\s/g, "").replace(/[^a-z]/g, "").replace(/[j]/g, "i")
+
+		ciphered_text = ""
+		for i in [1..order.length]
+			index = order.indexOf(i)
+			ciphered_text += plaintext[index]
+
+		return ciphered_text
+
 
