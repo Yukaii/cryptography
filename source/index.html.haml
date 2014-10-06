@@ -3,67 +3,71 @@ title: 資訊安全導論作業一
 ---
 %h1 資訊安全導論作業一
 
-%h2 Caesar Cipher
-= form_tag '/', :id => 'caesar-form' do
-  = field_set_tag do 
-    = text_field_tag 'plaintext', :value => 'distributed anonymous'
-    %select{:name => 'shift'}
-      - for i in 0...27
-        - if i != 5
-          %option{:value => "#{i}"}= "#{i}"
-        - else
-          %option{:value => "#{i}", :selected => 'selected'}= "#{i}"
+%a{:href => "https://github.com/you"}
+  %img{:alt => "Fork me on GitHub", "data-canonical-src" => "https://s3.amazonaws.com/github/ribbons/forkme_left_darkblue_121621.png", :src => "https://camo.githubusercontent.com/567c3a48d796e2fc06ea80409cc9dd82bf714434/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f6c6566745f6461726b626c75655f3132313632312e706e67", :style => "position: absolute; top: 0; left: 0; border: 0;"}/
 
-  = field_set_tag do
-    = submit_tag 'Cipher!', :onclick => 'cipher()'
-  .ciphered_text
+.block
+  .caesar
+    %h2 Caesar Cipher
+    = form_tag '/', :id => 'caesar-form' do
+      = text_field_tag 'plaintext', :value => 'distributed anonymous'
+      %select{:name => 'shift'}
+        - for i in 0...26
+          - if i == 5
+            %option{:value => "#{i}", :selected => 'selected'}= "#{i}"
+          - else
+            %option{:value => "#{i}"}= "#{i}"
 
-%h2 Monoalphabetic Cipher
-= form_tag '/', :id => 'mono-form' do
-  = field_set_tag do 
-    = text_field_tag 'plaintext', :value => 'distributed anonymous'
-  = field_set_tag do
-    = submit_tag 'Cipher!', :onclick => 'cipher()'
-  .ciphered_text
+      %p= submit_tag 'Cipher!', :onclick => 'cipher()'
+      .ciphered_text
 
-%h2 Playfair Cipher
-= form_tag '/', :id => 'playfair-form' do
-  = field_set_tag do 
-    = text_field_tag 'plaintext', :value => 'distributed'
-    %br
-    key:
-    = text_field_tag 'key', :value => 'proclam'
-  = field_set_tag do
-    = submit_tag 'Cipher!', :onclick => 'cipher()'
-  .ciphered_text 
+.block
+  .mono
+    %h2 Monoalphabetic Cipher
+    = form_tag '/', :id => 'mono-form' do
+      = text_field_tag 'plaintext', :value => 'distributed anonymous'
+      %p= submit_tag 'Cipher!', :onclick => 'cipher()'
+      .ciphered_text
 
+.block
+  .playfair
+    %h2 Playfair Cipher
+    = form_tag '/', :id => 'playfair-form' do
+      = text_field_tag 'plaintext', :value => 'distributed'
+      %p key
+      %p= text_field_tag 'key', :value => 'proclam'
+      %p= submit_tag 'Cipher!', :onclick => 'cipher()'
+      .ciphered_text 
 
-%h2 Vername proposed the autokey system
-= form_tag '/', :id => 'vernam-form' do
-  = field_set_tag do 
-    = text_field_tag 'plaintext', :value => 'this'
-    %br
-    key:
-    = text_field_tag 'key', :value => 'pro'
-  = field_set_tag do
-    = submit_tag 'Cipher!', :onclick => 'cipher()'
-  .ciphered_text 
+.block
+  .vernam
+    %h2 Vername proposed the autokey system
+    = form_tag '/', :id => 'vernam-form' do
+      = text_field_tag 'plaintext', :value => 'this'
+      %p key
+      %p= text_field_tag 'key', :value => 'pro'
+      %p= submit_tag 'Cipher!', :onclick => 'cipher()'
+      .ciphered_text 
 
-%h2 Row transposition
-= form_tag '/', :id => 'row-form' do
-  = field_set_tag do 
-    = text_field_tag 'plaintext', :value => 'distributed anonymous'
-    %br
-    key:
-    = text_field_tag 'key', :value => '85167234'
-  = field_set_tag do
-    = submit_tag 'Cipher!', :onclick => 'cipher()'
-  .ciphered_text 
+.block
+  .row
+    %h2 Row transposition
+    = form_tag '/', :id => 'row-form' do
+      = text_field_tag 'plaintext', :value => 'distributed anonymous'
+      %p key
+      %p= text_field_tag 'key', :value => '85167234'
+      %p= submit_tag 'Cipher!', :onclick => 'cipher()'
+      .ciphered_text 
 
-%h2 Product Cipher
-= form_tag '/', :id => 'product-form' do
-  = field_set_tag do 
-    = text_field_tag 'plaintext', :value => 'distributed anonymous'
-  = field_set_tag do
-    = submit_tag 'Cipher!', :onclick => 'cipher()'
-  .ciphered_text   
+.block
+  .product
+    %h2 Product Cipher
+    = form_tag '/', :id => 'product-form' do
+      %p= text_field_tag 'plaintext', :value => 'distributed anonymous'
+      %p= submit_tag 'Cipher!', :onclick => 'cipher()'
+      .ciphered_text   
+
+.footer
+  %p Yukai Huang ©2014
+  %p Powered by MiddleMan, CoffeeScript, HAML, SCSS.
+  %p All Rights Reserved

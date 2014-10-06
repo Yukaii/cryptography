@@ -1,3 +1,54 @@
+@import "compass";
 body {
-  margin-top: 100px;
+  margin-top: 50px;
+}
+
+.block {
+  @include box-sizing(border-box);
+  .caesar {
+    margin-top: 3em;
+    padding: 6em 0 4em 0;
+    background-color: #A0FFBE;
+  }
+
+  .mono {
+    padding: 6em 0 4em 0;
+    background-color: #9DE7FF;
+  }
+
+  .playfair {
+    padding: 6em 0 4em 0;
+    background-color: #FFFFFF;    
+  }
+
+  .vernam {
+    padding: 6em 0 4em 0;
+    background-color: #8c8c8c;       
+  }
+
+  .row {
+    padding: 6em 0 4em 0;
+    background-color: #F69BD9;    
+  }
+
+  .product {
+    padding: 6em 0 4em 0;
+    background-color: #EBF69B; 
+  }
+
+  .ciphered_text {
+    height: 4em;
+  }
+
+
+}
+
+.footer {
+  p {
+    margin: 0;
+  }
+
+  padding: 1em;
+  background-color: #8D2F2F;
+  color: white;
 }

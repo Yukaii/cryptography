@@ -7,7 +7,7 @@
 #   1. CAESAR CIPHER                                         
 # ---------------------------------------------------------- #
 	$('#caesar-form').submit (event) ->
-		# handle form only useing jQuery
+		# handle form only using jQuery
 		event.preventDefault()
 
 		plaintext = $("#caesar-form input[name ='plaintext']").val()
@@ -281,7 +281,7 @@
 	#  4 12  9  6  1  5 17 13 10  8
 	product = (plaintext = "distributed anonymous")->
 
-		order = [15, 11, 19, 18, 16,  3,  7, 14,  2, 20,  4, 12,  9,  6,  1,  5, 17, 13, 10,  8]
+		order = [15,11,19,18,16,3,7,14,2,20,4,12,9,6,1,5,17,13,10,8]
 
 		plaintext = plaintext.replace(/\s/g, "").replace(/[^a-z]/g, "").replace(/[j]/g, "i")
 
@@ -291,5 +291,3 @@
 			ciphered_text += plaintext[index]
 
 		return ciphered_text
-
-
