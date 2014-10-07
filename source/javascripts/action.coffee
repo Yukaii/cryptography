@@ -1,5 +1,9 @@
-# $('#nav-caesar').click = ->
-#   $('html, body').animate
-#     scrollTop: $( $(this).attr('#caesar-form') ).offset(350).top
-#   	500
-#   return false;	
+$("a[href*=#]:not([href=#])").click ->
+  if location.pathname.replace(/^\//, "") is @pathname.replace(/^\//, "") and location.hostname is @hostname
+    target = $(@hash)
+    target = (if target.length then target else $("[name=" + @hash.slice(1) + "]"))
+    if target.length
+      $("html,body").animate
+        scrollTop: target.offset().top - 380
+      , 1000
+      false

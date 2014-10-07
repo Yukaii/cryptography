@@ -8,7 +8,7 @@
 # ---------------------------------------------------------- #
 	$('#caesar-form').submit (event) ->
 		# handle form only using jQuery
-		event.preventDefault()
+		# event.preventDefault()
 
 		plaintext = $("#caesar-form input[name ='plaintext']").val()
 		shift = parseInt($("select[name = 'shift']").find(":selected").val())
@@ -17,7 +17,8 @@
 
 		ct = $("#caesar-form .ciphered_text").get(0)
 		ct.innerHTML = "#{ciphered_text}"
-
+		false
+		
 	caesar = (plaintext = "distributed anonymous", shift = 5) ->
 		ciphered_text = ""
 		for char in plaintext 
@@ -235,7 +236,7 @@
 			key_code = (autokey.charCodeAt(i) - 97).toString(2)
 
 			ciphered_code_string = ""
-			
+
 			for j in [0..text_code.length-1]
 				ciphered_code_string += parseInt(text_code[j]) ^ parseInt(key_code[j])
 			

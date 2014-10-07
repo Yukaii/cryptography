@@ -6,6 +6,10 @@ body {
   background-image: image-url("background.png");
 }
 
+.header {
+  margin-bottom: 3em; 
+}
+
 .nav {
   position: fixed;
   left: 0;
@@ -47,7 +51,7 @@ body {
   position: relative;
 
   .caesar {
-    margin-top: 3em;
+    // margin-top: 3em;
     padding: 15em 0 11em 0;
     // background-color: #A0FFBE;
     &::before {
