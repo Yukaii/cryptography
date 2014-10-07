@@ -15,6 +15,7 @@
 
 @mixin white-h2-ciphered() {
     h2 {
+      text-transform: uppercase;
       margin-bottom: 2em; 
       color: white;
       @include text-shadow(black 1px 1px 20px, black -1px -1px 20px);
