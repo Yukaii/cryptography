@@ -5,12 +5,12 @@
     var caesar, mono, playfair, product, row, vernam;
     $('#caesar-form').submit(function(event) {
       var ciphered_text, ct, plaintext, shift;
-      event.preventDefault();
       plaintext = $("#caesar-form input[name ='plaintext']").val();
       shift = parseInt($("select[name = 'shift']").find(":selected").val());
       ciphered_text = caesar(plaintext, shift);
       ct = $("#caesar-form .ciphered_text").get(0);
-      return ct.innerHTML = "" + ciphered_text;
+      ct.innerHTML = "" + ciphered_text;
+      return false;
     });
     caesar = function(plaintext, shift) {
       var char, charCode, ciphered_text, upper, _i, _len;
