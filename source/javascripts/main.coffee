@@ -18,7 +18,7 @@
 		ct = $("#caesar-form .ciphered_text").get(0)
 		ct.innerHTML = "#{ciphered_text}"
 		false
-		
+
 	caesar = (plaintext = "distributed anonymous", shift = 5) ->
 		ciphered_text = ""
 		for char in plaintext 
@@ -63,7 +63,7 @@
 	mono = (plaintext = "distributed anonymous") ->
 		ciphered_text = ""
 		# "W","Z","G","R","L","O","U","A","Y","M","T","H","X","C","S","E","P","W","J","B","I","F","Q","V","K","D"
-		sub_table = [22,25,6,17,11,14,20,0,24,12,19,7,23,2,18,4,15,22,9,1,8,5,16,21,10,3]
+		sub_table = [22,25,6,17,11,14,20,0,24,12,19,7,23,2,18,4,15,13,9,1,8,5,16,21,10,3]
 
 		for char in plaintext 
 			charCode = char.charCodeAt(0)
