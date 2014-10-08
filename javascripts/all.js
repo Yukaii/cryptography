@@ -9198,7 +9198,7 @@ return jQuery;
       if (target.length) {
         $("html,body").animate({
           scrollTop: target.offset().top - 380
-        }, 1000);
+        }, 850);
         return false;
       }
     }
@@ -9268,7 +9268,7 @@ return jQuery;
         plaintext = "distributed anonymous";
       }
       ciphered_text = "";
-      sub_table = [22, 25, 6, 17, 11, 14, 20, 0, 24, 12, 19, 7, 23, 2, 18, 4, 15, 22, 9, 1, 8, 5, 16, 21, 10, 3];
+      sub_table = [22, 25, 6, 17, 11, 14, 20, 0, 24, 12, 19, 7, 23, 2, 18, 4, 15, 13, 9, 1, 8, 5, 16, 21, 10, 3];
       for (_i = 0, _len = plaintext.length; _i < _len; _i++) {
         char = plaintext[_i];
         charCode = char.charCodeAt(0);
