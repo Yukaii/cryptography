@@ -112,6 +112,8 @@
 
 		# all use lowercase alphabet
 		key = key.toLowerCase()
+		key = key.replace(/\s/g, "").replace(/[^a-z]/g, "")
+		
 		for char in key
 			if !(char in key_table)
 				key_table.push(char)
