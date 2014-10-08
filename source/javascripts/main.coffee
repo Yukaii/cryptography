@@ -232,22 +232,12 @@
 		ciphered_text = ""
 
 		for i in [0..plaintext.length-1]
-			text_code = (plaintext.charCodeAt(i) - 97).toString(2)
-			key_code = (autokey.charCodeAt(i) - 97).toString(2)
+			text_code = (plaintext.charCodeAt(i) - 97)
+			key_code = (autokey.charCodeAt(i) - 97)
 
-			ciphered_code_string = ""
-
-			for j in [0..text_code.length-1]
-				ciphered_code_string += parseInt(text_code[j]) ^ parseInt(key_code[j])
-			
-			ciphered_text += String.fromCharCode(parseInt(ciphered_code_string, 2) + 97)
+			ciphered_text += String.fromCharCode((text_code ^ key_code) % 26 + 97)
 
 		return ciphered_text
-
-		# xor = (str1, str2) -> 
-		# 	output = ""
-		# 	for i in [0..str1.length-1]
-		# 		str1[i]
 
 
 # ---------------------------------------------------------- #
