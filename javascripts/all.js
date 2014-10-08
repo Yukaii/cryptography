@@ -9311,6 +9311,7 @@ return jQuery;
       }
       key_table = [];
       key = key.toLowerCase();
+      key = key.replace(/\s/g, "").replace(/[^a-z]/g, "");
       for (_i = 0, _len = key.length; _i < _len; _i++) {
         char = key[_i];
         if (!(__indexOf.call(key_table, char) >= 0)) {
