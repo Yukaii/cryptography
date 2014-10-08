@@ -176,7 +176,7 @@
       return ct.innerHTML = "" + ciphered_text;
     });
     vernam = function(plaintext, key) {
-      var autokey, ciphered_code_string, ciphered_text, i, j, key_code, left, text_code, _i, _j, _k, _ref, _ref1, _ref2;
+      var autokey, ciphered_text, i, key_code, left, text_code, _i, _j, _ref, _ref1;
       if (plaintext == null) {
         plaintext = "this";
       }
@@ -192,13 +192,9 @@
       }
       ciphered_text = "";
       for (i = _j = 0, _ref1 = plaintext.length - 1; 0 <= _ref1 ? _j <= _ref1 : _j >= _ref1; i = 0 <= _ref1 ? ++_j : --_j) {
-        text_code = (plaintext.charCodeAt(i) - 97).toString(2);
-        key_code = (autokey.charCodeAt(i) - 97).toString(2);
-        ciphered_code_string = "";
-        for (j = _k = 0, _ref2 = text_code.length - 1; 0 <= _ref2 ? _k <= _ref2 : _k >= _ref2; j = 0 <= _ref2 ? ++_k : --_k) {
-          ciphered_code_string += parseInt(text_code[j]) ^ parseInt(key_code[j]);
-        }
-        ciphered_text += String.fromCharCode(parseInt(ciphered_code_string, 2) + 97);
+        text_code = plaintext.charCodeAt(i) - 97;
+        key_code = autokey.charCodeAt(i) - 97;
+        ciphered_text += String.fromCharCode((text_code ^ key_code) % 26 + 97);
       }
       return ciphered_text;
     };
