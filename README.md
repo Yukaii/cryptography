@@ -8,7 +8,7 @@ https://github.com/yukaihuang1993/cryptography
 ###ciphered solutions:
 1. inxywngzyji fstsdrtzx
 2. ryjbnyziblr wcsckxsij
-3. ittucgesudby
+3. ittucgesytps
 4. cwgb
 5. sduiobnuyieotasrndtm
 6. ntidyobsnuiaoudrmtse
