@@ -8,15 +8,13 @@
 
 
 		# parse 8 ASCII charactor into 64 bits
-		plaintext_bits = []
+		plaintext_bits = ""
 
 		for i in [0..plaintext.length-1]
-			eachCharString = parseInt(plaintext[i].charCodeAt(0).toString(2)).padLeft(8).toString()
-			for eachBit in eachCharString
-				plaintext_bits.push(parseInt(eachBit))
+			plaintext_bits += parseInt(plaintext[i].charCodeAt(0).toString(2)).padLeft(8).toString()
 
-		# console.log plaintext_bits
-
+		console.log "input Bits: #{plaintext_bits}"
+		console.log "key bits: #{key}"
 
 		# Initial Permutation
 		# plaintext_bits = initialPunctuation(plaintext_bits)
@@ -27,16 +25,29 @@
 		rightBits = plaintext_bits.substr(32, 32)
 
 		key = permutate(key, PC1)
+		console.log "CD[0]: #{key}"
 
 		# FOR 16 ROUNDS
 		for i in [1..16]
 			key = key.rotate(SHIFT[i])
+			console.log "CD[#{i}]: #{key}"
+			console.log "KS[#{i}]: #{permutate(key, PC2)}"
 			leftBits = rightBits
 			rightBits = xor(fFunction(rightBits, permutate(key, PC2)),
 											leftBits )
 
 		ciphered = permutate(leftBits+rightBits, FP)
-		# console.log ciphered
+		console.log "output: #{ciphered}"
+
+		word = ""
+		for i in [0..7]
+			word += parseInt(ciphered.substr(i*8, 8),2).toString(16)
+
+		answer = $('#des_answer').get(0)
+		answer.innerHTML = ciphered + "<br><br>" + word
+
+
+
 
 	permutate = (bits, pTable) ->
 		permutated = ""
