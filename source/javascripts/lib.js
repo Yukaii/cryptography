@@ -14,6 +14,6 @@ String.prototype.rotate = function (n) {
 	else if (n < 0) {
 		n *= -1;
 		return this.substr(this.length-n) + this.slice(0, this.length-n);
-	}	
+	}
 	else return this.toString()
 }
