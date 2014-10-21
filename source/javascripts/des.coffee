@@ -12,8 +12,8 @@
     for i in [0..plaintext.length-1]
       plaintext_bits += parseInt(plaintext[i].charCodeAt(0).toString(2)).padLeft(8).toString()
 
-    console.log "input Bits: #{plaintext_bits}"
-    console.log "key bits: #{key}"
+    # console.log "input Bits: #{plaintext_bits}"
+    # console.log "key bits: #{key}"
 
     # Initial Permutation
     plaintext_bits = permutate(plaintext_bits, IP)
@@ -22,22 +22,28 @@
     leftBits  = plaintext_bits.substr(0, 32)
     rightBits = plaintext_bits.substr(32, 32)
 
+    # console.log "L[0]: #{leftBits}"
+    # console.log "R[0]: #{rightBits}"
+
     key = permutate(key, PC1)
-    console.log "CD[0]: #{key}"
+    # console.log "CD[0]: #{key}"
 
     # FOR 16 ROUNDS
     for i in [1..16]
-      key = key.rotate(SHIFT[i])
-      console.log "CD[#{i}]: #{key}"
-      console.log "KS[#{i}]: #{permutate(key, PC2)}"
-      leftBits = rightBits
-      rightBits = xor(fFunction(rightBits, permutate(key, PC2)),
-                      leftBits )
-      console.log "L[#{i}]: #{leftBits}"
-      console.log "R[#{i}]: #{rightBits}"
+      # SHIFT key
+      key = key.substr(0, 28).rotate(SHIFT[i-1]) + key.substr(28, 28).rotate(SHIFT[i-1])
 
-    ciphered = permutate(leftBits+rightBits, FP)
-    console.log "output: #{ciphered}"
+      # console.log "CD[#{i}]: #{key}"
+      # console.log "KS[#{i}]: #{permutate(key, PC2)}"
+
+      tmp = leftBits
+      leftBits = rightBits
+      rightBits = xor(fFunction(rightBits, permutate(key, PC2)), tmp)
+      # console.log "L[#{i}]: #{leftBits}"
+      # console.log "R[#{i}]: #{rightBits}"
+
+    ciphered = permutate(rightBits + leftBits, FP)
+    # console.log "output: #{ciphered}"
 
     word = ""
     for i in [0..7]
@@ -69,7 +75,9 @@
   fFunction = (rightBits, key) ->
 
     rightBits = permutate(rightBits, EP)
+    # console.log "E: #{rightBits}"
     rightBits = xor(rightBits, key)
+    # console.log "xor: #{rightBits}"
     
     # do SBOX
     tmp = rightBits
@@ -79,8 +87,10 @@
       # console.log tmp.substr(6*i, 6)
       rightBits += sbox(tmp.substr(6*i, 6), SBOX[i])
 
+    # console.log "sbox: #{rightBits}"
     # Permutation again
     rightBits = permutate(rightBits, RP)
+    # console.log "P: #{rightBits}"
 
     return rightBits
     
