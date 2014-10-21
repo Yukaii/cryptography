@@ -17,8 +17,11 @@
     # Prepare L/R for the first round
     leftBits  = plaintext_bits.substr(0, 32)
     rightBits = plaintext_bits.substr(32, 32)
+    console.log "L[0]: #{leftBits}"
+    console.log "R[0]: #{rightBits}"
 
     key = permutate(key, PC1)
+
 
     # FOR 16 ROUNDS
     for i in [1..16]
@@ -29,6 +32,9 @@
       leftBits = rightBits
       rightBits = xor(fFunction(rightBits, permutate(key, PC2)), tmp)
 
+      console.log "L[#{i}]: #{leftBits}"
+      console.log "R[#{i}]: #{rightBits}"
+
     ciphered = permutate(rightBits + leftBits, FP)
     # console.log "output: #{ciphered}"
 
@@ -38,6 +44,50 @@
 
     answer = $('#des_answer').get(0)
     answer.innerHTML = ciphered + "<br><br>" + word
+
+
+
+
+
+
+    # start about decrypt
+    # ----------------------------
+    key = $("#des-form input[name ='key']").val()
+    console.log "input: #{ciphered}"
+    console.log "key: #{key}"
+    key = permutate(key, PC1)
+    console.log "CD[0]: #{key}"
+
+    ciphered = permutate(ciphered, FP.inverse())
+
+    # swap L/R / correct!11
+    rightBits = ciphered.substr(0, 32)
+    leftBits  = ciphered.substr(32, 32)
+
+    console.log "L[16]: #{leftBits}"
+    console.log "R[16]: #{rightBits}"
+
+    for i in [16..1]
+      console.log "ROUND #{i}"
+      if i < 16
+        # SHIFT key
+        # console.log "shift: #{RSHIFT[16-i]}"
+        key = key.substr(0, 28).rotate(-RSHIFT[16-i]) + key.substr(28, 28).rotate(-RSHIFT[16-i])
+
+      # console.log "KS[#{16-i}]: #{permutate(key, PC2)}"
+      tmp = rightBits
+      rightBits = leftBits
+      leftBits = xor(fFunction(leftBits, permutate(key, PC2)), tmp)
+
+
+    decrypted = permutate(leftBits+rightBits, FP)
+    console.log decrypted
+
+    word = ""
+    for i in [0..7]
+      word += String.fromCharCode(parseInt(decrypted.substr(i*8, 8),2))
+    console.log word
+
 
 
 
@@ -73,4 +123,19 @@
     rightBits = permutate(rightBits, RP)
 
     return rightBits
+
+# @des_decrypt = ->
+
+#   $('#des-form').submit (event) ->
+#     event.preventDefault()
+
+#     plaintext = $("#des-form input[name ='plaintext']").val()
+#     key = $("#des-form input[name ='key']").val()
+
+
+
+
+
+
+
     

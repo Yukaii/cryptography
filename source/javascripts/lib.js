@@ -17,3 +17,21 @@ String.prototype.rotate = function (n) {
 	}
 	else return this.toString()
 }
+
+Array.prototype.inverse = function (){
+	inversed = new Array(this.max());
+	for (i = 0; i < inversed.length; i ++) {
+		inversed[i] = this.indexOf(i+1) + 1;
+	}
+	return inversed;
+};
+
+// http://stackoverflow.com/questions/1669190/javascript-min-max-array-values
+Array.prototype.max = function() {
+  return Math.max.apply(null, this);
+};
+
+Array.prototype.min = function() {
+  return Math.min.apply(null, this);
+};
+

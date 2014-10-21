@@ -1,7 +1,9 @@
-%h1 DES加密
+%h1 DES
 
 = form_tag '#', :id => 'des-form' do
   %p= text_field_tag 'plaintext', :value => 'abcdefgh'
   %p= text_field_tag 'key', :value => '0011101100111000100110000011011100010101001000001111011101011110'
-  %p= submit_tag 'Cipher!', :onclick => 'des()'
-  #des_answer
+  %p= submit_tag 'Encrypt!', :onclick => 'des()'
+  %p= submit_tag 'Decrypt!', :onclick => 'des_decrypt()'
+  %p#des_answer
+  %p#decode
