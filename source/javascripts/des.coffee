@@ -30,7 +30,7 @@
       leftBits = rightBits
       rightBits = xor(fFunction(rightBits, permutate(key, PC2)), tmp)
 
-    ciphered = permutate(rightBits + leftBits, FP)
+    ciphered = permutate(rightBits+leftBits, FP)
 
     word = ""
     for i in [0..7]
@@ -38,10 +38,6 @@
 
     answer = $('#des_answer').get(0)
     answer.innerHTML = ciphered + "<br><br>" + word
-
-
-
-
 
 
     # start about decrypt
@@ -65,7 +61,6 @@
       rightBits = leftBits
       leftBits = xor(fFunction(leftBits, permutate(key, PC2)), tmp)
 
-
     decrypted = permutate(leftBits+rightBits, FP)
     console.log decrypted
 
@@ -73,7 +68,6 @@
     for i in [0..7]
       word += String.fromCharCode(parseInt(decrypted.substr(i*8, 8),2))
     console.log word
-
 
 
 
