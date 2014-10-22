@@ -1,0 +1,87 @@
+(function() {
+  this.des = function() {
+    var fFunction, permutate, sbox, xor;
+    $('#des-form').submit(function(event) {
+      var answer, ciphered, decrypted, i, key, leftBits, plaintext, plaintext_bits, rightBits, tmp, word, _i, _j, _k, _l, _m, _ref;
+      event.preventDefault();
+      plaintext = $("#des-form input[name ='plaintext']").val();
+      key = $("#des-form input[name ='key']").val();
+      plaintext_bits = "";
+      for (i = _i = 0, _ref = plaintext.length - 1; 0 <= _ref ? _i <= _ref : _i >= _ref; i = 0 <= _ref ? ++_i : --_i) {
+        plaintext_bits += parseInt(plaintext[i].charCodeAt(0).toString(2)).padLeft(8).toString();
+      }
+      plaintext_bits = permutate(plaintext_bits, IP);
+      leftBits = plaintext_bits.substr(0, 32);
+      rightBits = plaintext_bits.substr(32, 32);
+      key = permutate(key, PC1);
+      for (i = _j = 1; _j <= 16; i = ++_j) {
+        key = key.substr(0, 28).rotate(SHIFT[i - 1]) + key.substr(28, 28).rotate(SHIFT[i - 1]);
+        tmp = leftBits;
+        leftBits = rightBits;
+        rightBits = xor(fFunction(rightBits, permutate(key, PC2)), tmp);
+      }
+      ciphered = permutate(rightBits + leftBits, FP);
+      word = "";
+      for (i = _k = 0; _k <= 7; i = ++_k) {
+        word += parseInt(ciphered.substr(i * 8, 8), 2).toString(16);
+      }
+      answer = $('#des_answer').get(0);
+      answer.innerHTML = ciphered + "<br><br>" + word;
+      key = $("#des-form input[name ='key']").val();
+      key = permutate(key, PC1);
+      ciphered = permutate(ciphered, FP.inverse());
+      rightBits = ciphered.substr(0, 32);
+      leftBits = ciphered.substr(32, 32);
+      for (i = _l = 16; _l >= 1; i = --_l) {
+        if (i < 16) {
+          key = key.substr(0, 28).rotate(-RSHIFT[16 - i]) + key.substr(28, 28).rotate(-RSHIFT[16 - i]);
+        }
+        tmp = rightBits;
+        rightBits = leftBits;
+        leftBits = xor(fFunction(leftBits, permutate(key, PC2)), tmp);
+      }
+      decrypted = permutate(leftBits + rightBits, FP);
+      console.log(decrypted);
+      word = "";
+      for (i = _m = 0; _m <= 7; i = ++_m) {
+        word += String.fromCharCode(parseInt(decrypted.substr(i * 8, 8), 2));
+      }
+      return console.log(word);
+    });
+    permutate = function(bits, pTable) {
+      var i, permutated, _i, _ref;
+      permutated = "";
+      for (i = _i = 0, _ref = pTable.length - 1; 0 <= _ref ? _i <= _ref : _i >= _ref; i = 0 <= _ref ? ++_i : --_i) {
+        permutated += bits[pTable[i] - 1].toString();
+      }
+      return permutated;
+    };
+    xor = function(a, b) {
+      var i, xorrrr, _i, _ref;
+      xorrrr = "";
+      for (i = _i = 0, _ref = a.length - 1; 0 <= _ref ? _i <= _ref : _i >= _ref; i = 0 <= _ref ? ++_i : --_i) {
+        xorrrr += a[i] ^ b[i];
+      }
+      return xorrrr;
+    };
+    sbox = function(bits, sbox) {
+      var x, y;
+      x = bits.substr(1, 4);
+      y = bits[0] + bits[5];
+      return parseInt(parseInt(sbox[parseInt(x, 2) + parseInt(y, 2) * 16]).toString(2)).padLeft(4).toString();
+    };
+    return fFunction = function(rightBits, key) {
+      var i, tmp, _i;
+      rightBits = permutate(rightBits, EP);
+      rightBits = xor(rightBits, key);
+      tmp = rightBits;
+      rightBits = "";
+      for (i = _i = 0; _i <= 7; i = ++_i) {
+        rightBits += sbox(tmp.substr(6 * i, 6), SBOX[i]);
+      }
+      rightBits = permutate(rightBits, RP);
+      return rightBits;
+    };
+  };
+
+}).call(this);
