@@ -1,38 +1,78 @@
 (function() {
-  this.des = function() {
-    var fFunction, permutate, sbox, xor;
+  var DesCipher, outputString;
+
+  outputString = "";
+
+  $(document).ready(function() {
     $('#des-form').submit(function(event) {
-      var answer, ciphered, decrypted, i, key, leftBits, plaintext, plaintext_bits, rightBits, tmp, word, _i, _j, _k, _l, _m, _ref;
-      event.preventDefault();
+      return event.preventDefault();
+    });
+    $("input[tag='encrypt']").click(function() {
+      var ciphered, key, plaintext;
+      outputString = "";
+      $("#output_log").val("");
       plaintext = $("#des-form input[name ='plaintext']").val();
       key = $("#des-form input[name ='key']").val();
-      plaintext_bits = "";
-      for (i = _i = 0, _ref = plaintext.length - 1; 0 <= _ref ? _i <= _ref : _i >= _ref; i = 0 <= _ref ? ++_i : --_i) {
-        plaintext_bits += parseInt(plaintext[i].charCodeAt(0).toString(2)).padLeft(8).toString();
+      if (!val_binary_64bits.test(plaintext)) {
+        $("#plain_alert").html("Invalid Input, plaintext must be 64 bits binary code");
       }
+      if (!val_binary_64bits.test(key)) {
+        return $("#key_alert").html("invalid key input");
+      } else {
+        $("#key_alert").html("");
+        ciphered = DesCipher.encrypt(plaintext, key);
+        $('#encrypt').html(ciphered);
+        return $("#output_log").val(outputString);
+      }
+    });
+    return $("input[tag='decrypt']").click(function() {
+      var ciphered, decrypted, key;
+      $("#output_log").val("");
+      outputString = "";
+      ciphered = $("#des-form input[name ='ciphertext']").val();
+      key = $("#des-form input[name ='key']").val();
+      if (!val_binary_64bits.test(ciphered)) {
+        return $('#cipher_alert').html("Invalid input, must be 64 bits binary code");
+      } else {
+        decrypted = DesCipher.decrypt(ciphered, key);
+        return $("#decrypt").html(decrypted);
+      }
+    });
+  });
+
+  DesCipher = (function() {
+    var fFunction, permutate, sbox, xor;
+
+    function DesCipher() {}
+
+    DesCipher.encrypt = function(plaintext, key) {
+      var ciphered, i, leftBits, plaintext_bits, rightBits, tmp, _i;
+      plaintext_bits = plaintext;
       plaintext_bits = permutate(plaintext_bits, IP);
       leftBits = plaintext_bits.substr(0, 32);
       rightBits = plaintext_bits.substr(32, 32);
       key = permutate(key, PC1);
-      for (i = _j = 1; _j <= 16; i = ++_j) {
+      for (i = _i = 1; _i <= 16; i = ++_i) {
+        outputString += "Round " + i + "\n";
         key = key.substr(0, 28).rotate(SHIFT[i - 1]) + key.substr(28, 28).rotate(SHIFT[i - 1]);
         tmp = leftBits;
         leftBits = rightBits;
         rightBits = xor(fFunction(rightBits, permutate(key, PC2)), tmp);
+        outputString += "" + (leftBits + rightBits) + "\n\n";
       }
       ciphered = permutate(rightBits + leftBits, FP);
-      word = "";
-      for (i = _k = 0; _k <= 7; i = ++_k) {
-        word += parseInt(ciphered.substr(i * 8, 8), 2).toString(16);
-      }
-      answer = $('#des_answer').get(0);
-      answer.innerHTML = ciphered + "<br><br>" + word;
+      outputString += "\n\nOutput: \n" + ciphered;
+      return ciphered;
+    };
+
+    DesCipher.decrypt = function(ciphered, key) {
+      var decrypted, i, leftBits, rightBits, tmp, _i;
       key = $("#des-form input[name ='key']").val();
       key = permutate(key, PC1);
       ciphered = permutate(ciphered, FP.inverse());
       rightBits = ciphered.substr(0, 32);
       leftBits = ciphered.substr(32, 32);
-      for (i = _l = 16; _l >= 1; i = --_l) {
+      for (i = _i = 16; _i >= 1; i = --_i) {
         if (i < 16) {
           key = key.substr(0, 28).rotate(-RSHIFT[16 - i]) + key.substr(28, 28).rotate(-RSHIFT[16 - i]);
         }
@@ -42,12 +82,9 @@
       }
       decrypted = permutate(leftBits + rightBits, FP);
       console.log(decrypted);
-      word = "";
-      for (i = _m = 0; _m <= 7; i = ++_m) {
-        word += String.fromCharCode(parseInt(decrypted.substr(i * 8, 8), 2));
-      }
-      return console.log(word);
-    });
+      return decrypted;
+    };
+
     permutate = function(bits, pTable) {
       var i, permutated, _i, _ref;
       permutated = "";
@@ -56,6 +93,7 @@
       }
       return permutated;
     };
+
     xor = function(a, b) {
       var i, xorrrr, _i, _ref;
       xorrrr = "";
@@ -64,13 +102,15 @@
       }
       return xorrrr;
     };
+
     sbox = function(bits, sbox) {
       var x, y;
       x = bits.substr(1, 4);
       y = bits[0] + bits[5];
       return parseInt(parseInt(sbox[parseInt(x, 2) + parseInt(y, 2) * 16]).toString(2)).padLeft(4).toString();
     };
-    return fFunction = function(rightBits, key) {
+
+    fFunction = function(rightBits, key) {
       var i, tmp, _i;
       rightBits = permutate(rightBits, EP);
       rightBits = xor(rightBits, key);
@@ -82,6 +122,9 @@
       rightBits = permutate(rightBits, RP);
       return rightBits;
     };
-  };
+
+    return DesCipher;
+
+  })();
 
 }).call(this);

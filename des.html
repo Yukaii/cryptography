@@ -13,12 +13,25 @@
   </head>
   <body class="des">
     <h1>DES</h1>
-<form action="#" accept-charset="UTF-8" id="des-form" method="post"><p><input type="text" name="plaintext" value="abcdefgh" /></p>
-<p><input type="text" name="key" value="0011101100111000100110000011011100010101001000001111011101011110" /></p>
-<p><input type="submit" value="Encrypt!" onclick="des()" /></p>
-<p><input type="submit" value="Decrypt!" onclick="des_decrypt()" /></p>
-<p id='des_answer'></p>
-<p id='decode'></p>
+<h2>Encrypt</h2>
+<form action="#" accept-charset="UTF-8" id="des-form" method="post"><p>
+  plaintext
+  <input type="text" name="plaintext" value="0110000101100010011000110110010001100101011001100110011101101000" />
+</p>
+<div id='plain_alert'></div>
+<p>
+  key
+  <input type="text" name="key" value="0011101100111000100110000011011100010101001000001111011101011110" />
+</p>
+<p><input type="submit" value="Encrypt!" tag="encrypt" /></p>
+<div id='key_alert'></div>
+<p id='encrypt'></p>
+<h2>Decrypt</h2>
+<p><input type="text" name="ciphertext" value="0110001011100000110001101000110001001000111001000111010111101101" /></p>
+<input type="submit" value="Decrypt!" tag="decrypt" />
+<div id='cipher_alert'></div>
+<p id='decrypt'></p>
+<textarea cols='25' id='output_log' rows='40' wrap='off'></textarea>
 </form>
 
     <script src="javascripts/all.js" type="text/javascript"></script>
