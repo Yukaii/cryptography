@@ -1,45 +1,101 @@
-@des = ->
+outputString = ""
 
+$(document).ready ->
   $('#des-form').submit (event) ->
     event.preventDefault()
+    
+
+  $("input[tag='encrypt']").click ->
+    # reset output log textarea
+    outputString = ""
+    $("#output_log").val("")
 
     plaintext = $("#des-form input[name ='plaintext']").val()
     key = $("#des-form input[name ='key']").val()
 
+    if !val_binary_64bits.test(plaintext)
+      $("#plain_alert").html("Invalid Input, plaintext must be 64 bits binary code")
+
+    if !val_binary_64bits.test(key)
+      $("#key_alert").html("invalid key input")
+
+    else
+      $("#key_alert").html("")
+      ciphered = DesCipher.encrypt(plaintext, key)
+      $('#encrypt').html(ciphered)
+      $("#output_log").val(outputString)
+
+
+      # word = ""
+      # for i in [0..7]
+      #   word += parseInt(ciphered.substr(i*8, 8),2).toString(16)
+
+      # answer = $('#des_answer').get(0)
+      # answer.innerHTML = ciphered + "<br><br>" + word
+
+  $("input[tag='decrypt']").click ->
+
+    $("#output_log").val("")
+    outputString = ""
+
+    ciphered = $("#des-form input[name ='ciphertext']").val()
+    key = $("#des-form input[name ='key']").val()
+
+    if !val_binary_64bits.test(ciphered)
+      $('#cipher_alert').html("Invalid input, must be 64 bits binary code")
+
+    else
+      decrypted = DesCipher.decrypt(ciphered, key)
+      $("#decrypt").html(decrypted)
+
+    # word = ""
+    # for i in [0..7]
+    #   word += String.fromCharCode(parseInt(decrypted.substr(i*8, 8),2))
+    # console.log word
+
+
+class DesCipher
+
+  @encrypt: (plaintext, key) ->
     # parse 8 ASCII charactor into 64 bits
-    plaintext_bits = ""
-    for i in [0..plaintext.length-1]
-      plaintext_bits += parseInt(plaintext[i].charCodeAt(0).toString(2)).padLeft(8).toString()
+    # plaintext_bits = ""
+    # for i in [0..plaintext.length-1]
+    #   plaintext_bits += parseInt(plaintext[i].charCodeAt(0).toString(2)).padLeft(8).toString()
+    plaintext_bits = plaintext
 
     # Initial Permutation
     plaintext_bits = permutate(plaintext_bits, IP)
+    # outputString += "Initial Permutation: \n" + plaintext_bits + "\n"
 
     # Prepare L/R for the first round
     leftBits  = plaintext_bits.substr(0, 32)
     rightBits = plaintext_bits.substr(32, 32)
 
     key = permutate(key, PC1)
-
+    # outputString += "key PC1 Permutation: \n" + key + "\n\n\n"
 
     # FOR 16 ROUNDS
     for i in [1..16]
       # SHIFT key
+      outputString += "Round #{i}\n"
       key = key.substr(0, 28).rotate(SHIFT[i-1]) + key.substr(28, 28).rotate(SHIFT[i-1])
+      # outputString += "C[#{i}]: #{key.substr(0, 28)}\n"
+      # outputString += "D[#{i}]: #{key.substr(28,28)}\n"
 
       tmp = leftBits
       leftBits = rightBits
       rightBits = xor(fFunction(rightBits, permutate(key, PC2)), tmp)
+      # outputString += "L[#{i}]: #{leftBits}\n"
+      # outputString += "R[#{i}]: #{rightBits}\n\n"
+      outputString += "#{leftBits+rightBits}\n\n"
 
     ciphered = permutate(rightBits+leftBits, FP)
+    outputString += "\n\nOutput: \n#{ciphered}"
 
-    word = ""
-    for i in [0..7]
-      word += parseInt(ciphered.substr(i*8, 8),2).toString(16)
-
-    answer = $('#des_answer').get(0)
-    answer.innerHTML = ciphered + "<br><br>" + word
+    return ciphered
 
 
+  @decrypt: (ciphered, key) ->
     # start about decrypt
     # ----------------------------
     key = $("#des-form input[name ='key']").val()
@@ -63,13 +119,7 @@
 
     decrypted = permutate(leftBits+rightBits, FP)
     console.log decrypted
-
-    word = ""
-    for i in [0..7]
-      word += String.fromCharCode(parseInt(decrypted.substr(i*8, 8),2))
-    console.log word
-
-
+    return decrypted
 
   permutate = (bits, pTable) ->
     permutated = ""
@@ -103,4 +153,3 @@
     rightBits = permutate(rightBits, RP)
 
     return rightBits
-    
