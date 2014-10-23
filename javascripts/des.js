@@ -54,11 +54,10 @@
     function DesCipher() {}
 
     DesCipher.encrypt = function(plaintext, key) {
-      var ciphered, i, leftBits, plaintext_bits, rightBits, tmp, _i;
-      plaintext_bits = plaintext;
-      plaintext_bits = permutate(plaintext_bits, IP);
-      leftBits = plaintext_bits.substr(0, 32);
-      rightBits = plaintext_bits.substr(32, 32);
+      var ciphered, i, leftBits, rightBits, tmp, _i;
+      plaintext = permutate(plaintext, IP);
+      leftBits = plaintext.substr(0, 32);
+      rightBits = plaintext.substr(32, 32);
       key = permutate(key, PC1);
       for (i = _i = 1; _i <= 16; i = ++_i) {
         outputString += "Round " + i + "\n";
