@@ -7,8 +7,7 @@ $(document).ready ->
 
   $("input[tag='encrypt']").click ->
     # reset output log textarea
-    outputString = ""
-    $("#output_log").val("")
+    clearOutput()
 
     plaintext = $("#des-form input[name ='plaintext']").val()
     key = $("#des-form input[name ='key']").val()
@@ -20,7 +19,6 @@ $(document).ready ->
       $("#key_alert").html("invalid key input")
 
     else
-      $("#key_alert").html("")
       ciphered = DesCipher.encrypt(plaintext, key)
       $('#encrypt').html(ciphered)
       $("#output_log").val(outputString)
@@ -35,8 +33,7 @@ $(document).ready ->
 
   $("input[tag='decrypt']").click ->
 
-    $("#output_log").val("")
-    outputString = ""
+    clearOutput()
 
     ciphered = $("#des-form input[name ='ciphertext']").val()
     key = $("#des-form input[name ='key']").val()
@@ -53,6 +50,13 @@ $(document).ready ->
     #   word += String.fromCharCode(parseInt(decrypted.substr(i*8, 8),2))
     # console.log word
 
+clearOutput = ->
+  $('#encrypt').html("")
+  $("#decrypt").html("")
+  $("#output_log").val("")
+  $("#key_alert").html("")
+  $("#cipher_alert").html("")
+  outputString = ""
 
 class DesCipher
 
@@ -118,7 +122,7 @@ class DesCipher
       leftBits = xor(fFunction(leftBits, permutate(key, PC2)), tmp)
 
     decrypted = permutate(leftBits+rightBits, FP)
-    console.log decrypted
+    # console.log decrypted
     return decrypted
 
   permutate = (bits, pTable) ->
