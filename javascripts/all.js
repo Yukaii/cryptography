@@ -9206,9 +9206,11 @@ return jQuery;
 
 }).call(this);
 (function() {
-  var DesCipher, outputString;
+  var DesCipher, clearOutput, outputString, val_binary_64bits;
 
   outputString = "";
+
+  val_binary_64bits = /^[0-1]{64}$/;
 
   $(document).ready(function() {
     $('#des-form').submit(function(event) {
@@ -9216,8 +9218,7 @@ return jQuery;
     });
     $("input[tag='encrypt']").click(function() {
       var ciphered, key, plaintext;
-      outputString = "";
-      $("#output_log").val("");
+      clearOutput();
       plaintext = $("#des-form input[name ='plaintext']").val();
       key = $("#des-form input[name ='key']").val();
       if (!val_binary_64bits.test(plaintext)) {
@@ -9226,7 +9227,6 @@ return jQuery;
       if (!val_binary_64bits.test(key)) {
         return $("#key_alert").html("invalid key input");
       } else {
-        $("#key_alert").html("");
         ciphered = DesCipher.encrypt(plaintext, key);
         $('#encrypt').html(ciphered);
         return $("#output_log").val(outputString);
@@ -9234,8 +9234,7 @@ return jQuery;
     });
     return $("input[tag='decrypt']").click(function() {
       var ciphered, decrypted, key;
-      $("#output_log").val("");
-      outputString = "";
+      clearOutput();
       ciphered = $("#des-form input[name ='ciphertext']").val();
       key = $("#des-form input[name ='key']").val();
       if (!val_binary_64bits.test(ciphered)) {
@@ -9247,8 +9246,17 @@ return jQuery;
     });
   });
 
+  clearOutput = function() {
+    $('#encrypt').html("");
+    $("#decrypt").html("");
+    $("#output_log").val("");
+    $("#key_alert").html("");
+    $("#cipher_alert").html("");
+    return outputString = "";
+  };
+
   DesCipher = (function() {
-    var fFunction, permutate, sbox, xor;
+    var beautifyOutput, fFunction, permutate, sbox, toASCII, toBinary, xor;
 
     function DesCipher() {}
 
@@ -9265,11 +9273,11 @@ return jQuery;
         tmp = leftBits;
         leftBits = rightBits;
         rightBits = xor(fFunction(rightBits, permutate(key, PC2)), tmp);
-        outputString += "" + (leftBits + rightBits) + "\n\n";
+        outputString += "" + (beautifyOutput(leftBits + rightBits)) + "\n\n";
       }
       ciphered = permutate(rightBits + leftBits, FP);
-      outputString += "\n\nOutput: \n" + ciphered;
-      return ciphered;
+      outputString += "\n\nOutput: \n" + (beautifyOutput(ciphered));
+      return beautifyOutput(ciphered);
     };
 
     DesCipher.decrypt = function(ciphered, key) {
@@ -9288,8 +9296,34 @@ return jQuery;
         leftBits = xor(fFunction(leftBits, permutate(key, PC2)), tmp);
       }
       decrypted = permutate(leftBits + rightBits, FP);
-      console.log(decrypted);
-      return decrypted;
+      return beautifyOutput(decrypted);
+    };
+
+    toBinary = function(chars) {
+      var bits, i, _i, _ref;
+      bits = "";
+      for (i = _i = 0, _ref = chars.length - 1; 0 <= _ref ? _i <= _ref : _i >= _ref; i = 0 <= _ref ? ++_i : --_i) {
+        bits += parseInt(chars[i].charCodeAt(0).toString(2)).padLeft(8).toString();
+      }
+      return bits;
+    };
+
+    toASCII = function(bits) {
+      var i, word, _i;
+      word = "";
+      for (i = _i = 0; _i <= 7; i = ++_i) {
+        word += parseInt(bits.substr(i * 8, 8), 2).toString(16);
+      }
+      return word;
+    };
+
+    beautifyOutput = function(bits) {
+      var i, output, _i;
+      output = "";
+      for (i = _i = 0; _i <= 7; i = ++_i) {
+        output += bits.substr(i * 8, 8) + " ";
+      }
+      return output;
     };
 
     permutate = function(bits, pTable) {
@@ -9749,8 +9783,6 @@ PC2 = [	14, 17, 11, 24,  1,  5,
 
 SHIFT = [1, 1, 2, 2, 2, 2, 2, 2, 1, 2, 2, 2, 2, 2, 2, 1]
 RSHIFT = [2, 1, 2, 2, 2, 2, 2, 2, 1, 2, 2, 2, 2, 2, 2, 1]
-
-val_binary_64bits = /^[0-1]{64}$/
 ;
 
 
