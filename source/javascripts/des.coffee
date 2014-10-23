@@ -57,15 +57,13 @@ class DesCipher
 
   @encrypt: (plaintext, key) ->
 
-    plaintext_bits = plaintext
-
     # Initial Permutation
-    plaintext_bits = permutate(plaintext_bits, IP)
-    # outputString += "Initial Permutation: \n" + plaintext_bits + "\n"
+    plaintext = permutate(plaintext, IP)
+    # outputString += "Initial Permutation: \n" + plaintext + "\n"
 
     # Prepare L/R for the first round
-    leftBits  = plaintext_bits.substr(0, 32)
-    rightBits = plaintext_bits.substr(32, 32)
+    leftBits  = plaintext.substr(0, 32)
+    rightBits = plaintext.substr(32, 32)
 
     key = permutate(key, PC1)
     # outputString += "key PC1 Permutation: \n" + key + "\n\n\n"
