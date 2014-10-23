@@ -57,7 +57,7 @@ class DesCipher
 
   @encrypt: (plaintext, key) ->
 
-   plaintext_bits = plaintext
+    plaintext_bits = plaintext
 
     # Initial Permutation
     plaintext_bits = permutate(plaintext_bits, IP)
