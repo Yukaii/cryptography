@@ -1,4 +1,7 @@
+# global output string variable
 outputString = ""
+
+val_binary_64bits = /^[0-1]{64}$/
 
 $(document).ready ->
   $('#des-form').submit (event) ->
@@ -23,14 +26,6 @@ $(document).ready ->
       $('#encrypt').html(ciphered)
       $("#output_log").val(outputString)
 
-
-      # word = ""
-      # for i in [0..7]
-      #   word += parseInt(ciphered.substr(i*8, 8),2).toString(16)
-
-      # answer = $('#des_answer').get(0)
-      # answer.innerHTML = ciphered + "<br><br>" + word
-
   $("input[tag='decrypt']").click ->
 
     clearOutput()
@@ -45,10 +40,10 @@ $(document).ready ->
       decrypted = DesCipher.decrypt(ciphered, key)
       $("#decrypt").html(decrypted)
 
-    # word = ""
-    # for i in [0..7]
-    #   word += String.fromCharCode(parseInt(decrypted.substr(i*8, 8),2))
-    # console.log word
+# -----------------------------------------------------
+# Des Cipher
+# -----------------------------------------------------
+
 
 clearOutput = ->
   $('#encrypt').html("")
@@ -61,11 +56,8 @@ clearOutput = ->
 class DesCipher
 
   @encrypt: (plaintext, key) ->
-    # parse 8 ASCII charactor into 64 bits
-    # plaintext_bits = ""
-    # for i in [0..plaintext.length-1]
-    #   plaintext_bits += parseInt(plaintext[i].charCodeAt(0).toString(2)).padLeft(8).toString()
-    plaintext_bits = plaintext
+
+   plaintext_bits = plaintext
 
     # Initial Permutation
     plaintext_bits = permutate(plaintext_bits, IP)
@@ -89,14 +81,12 @@ class DesCipher
       tmp = leftBits
       leftBits = rightBits
       rightBits = xor(fFunction(rightBits, permutate(key, PC2)), tmp)
-      # outputString += "L[#{i}]: #{leftBits}\n"
-      # outputString += "R[#{i}]: #{rightBits}\n\n"
-      outputString += "#{leftBits+rightBits}\n\n"
+      outputString += "#{beautifyOutput(leftBits+rightBits)}\n\n"
 
     ciphered = permutate(rightBits+leftBits, FP)
-    outputString += "\n\nOutput: \n#{ciphered}"
+    outputString += "\n\nOutput: \n#{beautifyOutput(ciphered)}"
 
-    return ciphered
+    return beautifyOutput(ciphered)
 
 
   @decrypt: (ciphered, key) ->
@@ -123,7 +113,27 @@ class DesCipher
 
     decrypted = permutate(leftBits+rightBits, FP)
     # console.log decrypted
-    return decrypted
+    return beautifyOutput(decrypted)
+
+
+  toBinary = (chars) ->
+    # parse 8 ASCII charactor into 64 bits
+    bits = ""
+    for i in [0..chars.length-1]
+      bits += parseInt(chars[i].charCodeAt(0).toString(2)).padLeft(8).toString()
+    return bits
+
+  toASCII = (bits) ->
+    word = ""
+    for i in [0..7]
+      word += parseInt(bits.substr(i*8, 8),2).toString(16)
+    return word
+
+  beautifyOutput = (bits) ->
+    output = ""
+    for i in [0..7]
+      output += bits.substr(i*8, 8) + " "
+    return output
 
   permutate = (bits, pTable) ->
     permutated = ""
