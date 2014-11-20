@@ -53,7 +53,7 @@ clearOutput = ->
   $("#cipher_alert").html("")
   outputString = ""
 
-class DesCipher
+class @DesCipher
 
   @encrypt: (plaintext, key) ->
 

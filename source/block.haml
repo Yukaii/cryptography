@@ -1,0 +1,17 @@
+%h1 DES Cipher in CBC mode
+
+= form_tag '#', :id => 'block-form' do
+  %p Enter Image URL
+  = text_field_tag 'image-url', :value => 'http://i.imgur.com/AAmhldA.png'
+  %p Initial Vector
+  = text_field_tag 'initial-vector', :value => ''
+  %p Key
+  = text_field_tag 'block-key', :value => '0011101100111000100110000011011100010101001000001111011101011110'
+  %p
+  = submit_tag 'Encrypt!', :tag => 'encrypt'
+
+%img{:id => 'ori-pic', :crossorigin => 'anonymous'}
+
+-# %canvas{:id => 'original-pic'}
+%canvas{:id => 'proccessed-pic'}
+

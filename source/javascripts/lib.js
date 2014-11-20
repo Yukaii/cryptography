@@ -3,6 +3,9 @@ Number.prototype.padLeft = function (n,str){
     return Array(n-String(this).length+1).join(str||'0')+this;
 }
 
+Number.prototype.toBinary = function () {
+	return parseInt(this.toString(2)).padLeft(8).toString()
+}
 
 String.prototype.rotate = function (n) {
 	n = parseInt(n);
@@ -35,3 +38,11 @@ Array.prototype.min = function() {
   return Math.min.apply(null, this);
 };
 
+function xor(a, b) {
+  var i, xorrrr, _i, _ref;
+  xorrrr = "";
+  for (i = _i = 0, _ref = a.length - 1; 0 <= _ref ? _i <= _ref : _i >= _ref; i = 0 <= _ref ? ++_i : --_i) {
+    xorrrr += a[i] ^ b[i];
+  }
+  return xorrrr;
+};
