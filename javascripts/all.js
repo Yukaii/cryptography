@@ -9190,222 +9190,6 @@ return jQuery;
 
 }));
 (function() {
-  $("a[href*=#]:not([href=#])").click(function() {
-    var target;
-    if (location.pathname.replace(/^\//, "") === this.pathname.replace(/^\//, "") && location.hostname === this.hostname) {
-      target = $(this.hash);
-      target = (target.length ? target : $("[name=" + this.hash.slice(1) + "]"));
-      if (target.length) {
-        $("html,body").animate({
-          scrollTop: target.offset().top - 380
-        }, 850);
-        return false;
-      }
-    }
-  });
-
-}).call(this);
-(function() {
-  var DesCipher, clearOutput, outputString, val_binary_64bits;
-
-  outputString = "";
-
-  val_binary_64bits = /^[0-1]{64}$/;
-
-  $(document).ready(function() {
-    $('#des-form').submit(function(event) {
-      return event.preventDefault();
-    });
-    $("input[tag='encrypt']").click(function() {
-      var ciphered, key, plaintext;
-      clearOutput();
-      plaintext = $("#des-form input[name ='plaintext']").val();
-      key = $("#des-form input[name ='key']").val();
-      if (!val_binary_64bits.test(plaintext)) {
-        $("#plain_alert").html("Invalid Input, plaintext must be 64 bits binary code");
-      }
-      if (!val_binary_64bits.test(key)) {
-        return $("#key_alert").html("invalid key input");
-      } else {
-        ciphered = DesCipher.encrypt(plaintext, key);
-        $('#encrypt').html(ciphered);
-        return $("#output_log").val(outputString);
-      }
-    });
-    return $("input[tag='decrypt']").click(function() {
-      var ciphered, decrypted, key;
-      clearOutput();
-      ciphered = $("#des-form input[name ='ciphertext']").val();
-      key = $("#des-form input[name ='key']").val();
-      if (!val_binary_64bits.test(ciphered)) {
-        return $('#cipher_alert').html("Invalid input, must be 64 bits binary code");
-      } else {
-        decrypted = DesCipher.decrypt(ciphered, key);
-        return $("#decrypt").html(decrypted);
-      }
-    });
-  });
-
-  clearOutput = function() {
-    $('#encrypt').html("");
-    $("#decrypt").html("");
-    $("#output_log").val("");
-    $("#key_alert").html("");
-    $("#cipher_alert").html("");
-    return outputString = "";
-  };
-
-  DesCipher = (function() {
-    var beautifyOutput, fFunction, permutate, sbox, toASCII, toBinary, xor;
-
-    function DesCipher() {}
-
-    DesCipher.encrypt = function(plaintext, key) {
-      var ciphered, i, leftBits, rightBits, tmp, _i;
-      plaintext = permutate(plaintext, IP);
-      leftBits = plaintext.substr(0, 32);
-      rightBits = plaintext.substr(32, 32);
-      key = permutate(key, PC1);
-      for (i = _i = 1; _i <= 16; i = ++_i) {
-        outputString += "Round " + i + "\n";
-        key = key.substr(0, 28).rotate(SHIFT[i - 1]) + key.substr(28, 28).rotate(SHIFT[i - 1]);
-        tmp = leftBits;
-        leftBits = rightBits;
-        rightBits = xor(fFunction(rightBits, permutate(key, PC2)), tmp);
-        outputString += "" + (beautifyOutput(leftBits + rightBits)) + "\n\n";
-      }
-      ciphered = permutate(rightBits + leftBits, FP);
-      outputString += "\n\nOutput: \n" + (beautifyOutput(ciphered));
-      return beautifyOutput(ciphered);
-    };
-
-    DesCipher.decrypt = function(ciphered, key) {
-      var decrypted, i, leftBits, rightBits, tmp, _i;
-      key = $("#des-form input[name ='key']").val();
-      key = permutate(key, PC1);
-      ciphered = permutate(ciphered, FP.inverse());
-      rightBits = ciphered.substr(0, 32);
-      leftBits = ciphered.substr(32, 32);
-      for (i = _i = 16; _i >= 1; i = --_i) {
-        if (i < 16) {
-          key = key.substr(0, 28).rotate(-RSHIFT[16 - i]) + key.substr(28, 28).rotate(-RSHIFT[16 - i]);
-        }
-        tmp = rightBits;
-        rightBits = leftBits;
-        leftBits = xor(fFunction(leftBits, permutate(key, PC2)), tmp);
-      }
-      decrypted = permutate(leftBits + rightBits, FP);
-      return beautifyOutput(decrypted);
-    };
-
-    toBinary = function(chars) {
-      var bits, i, _i, _ref;
-      bits = "";
-      for (i = _i = 0, _ref = chars.length - 1; 0 <= _ref ? _i <= _ref : _i >= _ref; i = 0 <= _ref ? ++_i : --_i) {
-        bits += parseInt(chars[i].charCodeAt(0).toString(2)).padLeft(8).toString();
-      }
-      return bits;
-    };
-
-    toASCII = function(bits) {
-      var i, word, _i;
-      word = "";
-      for (i = _i = 0; _i <= 7; i = ++_i) {
-        word += parseInt(bits.substr(i * 8, 8), 2).toString(16);
-      }
-      return word;
-    };
-
-    beautifyOutput = function(bits) {
-      var i, output, _i;
-      output = "";
-      for (i = _i = 0; _i <= 7; i = ++_i) {
-        output += bits.substr(i * 8, 8) + " ";
-      }
-      return output;
-    };
-
-    permutate = function(bits, pTable) {
-      var i, permutated, _i, _ref;
-      permutated = "";
-      for (i = _i = 0, _ref = pTable.length - 1; 0 <= _ref ? _i <= _ref : _i >= _ref; i = 0 <= _ref ? ++_i : --_i) {
-        permutated += bits[pTable[i] - 1].toString();
-      }
-      return permutated;
-    };
-
-    xor = function(a, b) {
-      var i, xorrrr, _i, _ref;
-      xorrrr = "";
-      for (i = _i = 0, _ref = a.length - 1; 0 <= _ref ? _i <= _ref : _i >= _ref; i = 0 <= _ref ? ++_i : --_i) {
-        xorrrr += a[i] ^ b[i];
-      }
-      return xorrrr;
-    };
-
-    sbox = function(bits, sbox) {
-      var x, y;
-      x = bits.substr(1, 4);
-      y = bits[0] + bits[5];
-      return parseInt(parseInt(sbox[parseInt(x, 2) + parseInt(y, 2) * 16]).toString(2)).padLeft(4).toString();
-    };
-
-    fFunction = function(rightBits, key) {
-      var i, tmp, _i;
-      rightBits = permutate(rightBits, EP);
-      rightBits = xor(rightBits, key);
-      tmp = rightBits;
-      rightBits = "";
-      for (i = _i = 0; _i <= 7; i = ++_i) {
-        rightBits += sbox(tmp.substr(6 * i, 6), SBOX[i]);
-      }
-      rightBits = permutate(rightBits, RP);
-      return rightBits;
-    };
-
-    return DesCipher;
-
-  })();
-
-}).call(this);
-// http://stackoverflow.com/questions/5366849/convert-1-to-0001-in-javascript
-Number.prototype.padLeft = function (n,str){
-    return Array(n-String(this).length+1).join(str||'0')+this;
-}
-
-
-String.prototype.rotate = function (n) {
-	n = parseInt(n);
-	n %= this.length
-	// rotate left
-	if (n > 0)
-		return this.slice(n) + this.slice(0, n);
-	// rotate right
-	else if (n < 0) {
-		n *= -1;
-		return this.substr(this.length-n) + this.slice(0, this.length-n);
-	}
-	else return this.toString()
-}
-
-Array.prototype.inverse = function (){
-	inversed = new Array(this.max());
-	for (i = 0; i < inversed.length; i ++) {
-		inversed[i] = this.indexOf(i+1) + 1;
-	}
-	return inversed;
-};
-
-// http://stackoverflow.com/questions/1669190/javascript-min-max-array-values
-Array.prototype.max = function() {
-  return Math.max.apply(null, this);
-};
-
-Array.prototype.min = function() {
-  return Math.min.apply(null, this);
-};
-
-(function() {
   var __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
   this.cipher = function() {
@@ -9783,6 +9567,457 @@ PC2 = [	14, 17, 11, 24,  1,  5,
 SHIFT = [1, 1, 2, 2, 2, 2, 2, 2, 1, 2, 2, 2, 2, 2, 2, 1]
 RSHIFT = [2, 1, 2, 2, 2, 2, 2, 2, 1, 2, 2, 2, 2, 2, 2, 1]
 ;
+// http://stackoverflow.com/questions/5366849/convert-1-to-0001-in-javascript
+Number.prototype.padLeft = function (n,str){
+    return Array(n-String(this).length+1).join(str||'0')+this;
+}
+
+Number.prototype.toBinary = function () {
+	return parseInt(this.toString(2)).padLeft(8).toString()
+}
+
+String.prototype.rotate = function (n) {
+	n = parseInt(n);
+	n %= this.length
+	// rotate left
+	if (n > 0)
+		return this.slice(n) + this.slice(0, n);
+	// rotate right
+	else if (n < 0) {
+		n *= -1;
+		return this.substr(this.length-n) + this.slice(0, this.length-n);
+	}
+	else return this.toString()
+}
+
+Array.prototype.inverse = function (){
+	inversed = new Array(this.max());
+	for (i = 0; i < inversed.length; i ++) {
+		inversed[i] = this.indexOf(i+1) + 1;
+	}
+	return inversed;
+};
+
+// http://stackoverflow.com/questions/1669190/javascript-min-max-array-values
+Array.prototype.max = function() {
+  return Math.max.apply(null, this);
+};
+
+Array.prototype.min = function() {
+  return Math.min.apply(null, this);
+};
+
+function xor(a, b) {
+  var i, xorrrr, _i, _ref;
+  xorrrr = "";
+  for (i = _i = 0, _ref = a.length - 1; 0 <= _ref ? _i <= _ref : _i >= _ref; i = 0 <= _ref ? ++_i : --_i) {
+    xorrrr += a[i] ^ b[i];
+  }
+  return xorrrr;
+};
+"function"!=typeof Worker&&console&&console.log("Warning: Browser does not support web workers."),function(){function a(a,b){return!(b>a||a>b)}function b(a,b){if("function"!=typeof b)throw new Error("Expected callback function as parameter.");for(var c=0;c<a.length;c++){var d=a[c];if(d==b)return}a.push(b)}function c(a,b){for(var c=0;c<a.length;c++){var d=a[c];d.apply(null,b)}}var d="this.onmessage = function (event) {    var fnData = event.data.function;    var scripts = event.data.importScripts;    var fn = Function.apply(null, fnData.args.concat(fnData.body));    if(importScripts && importScripts.length > 0) {        importScripts.apply(null, scripts);    }    fn(event.data.parameter, function(result) {        postMessage(result);    });}",e="data:text/javascript;charset=utf-8,"+encodeURI(d),f=window.createBlobURL||window.createObjectURL;if(!f&&window.webkitURL&&(f=window.webkitURL.createObjectURL),"function"==typeof BlobBuilder&&"function"==typeof f){var g=new BlobBuilder;g.append(d),e=f(g.getBlob())}else if("function"==typeof Blob&&"function"==typeof f){var h=new Blob([d],{type:"text/javascript"});e=f(h)}var j=function(a,b){if(this.param=b,this.importScripts=[],this.callbacksDone=[],this.callbacksError=[],"function"==typeof a){var c=a.toString();this.scriptArgs=c.substring(c.indexOf("(")+1,c.indexOf(")")).split(","),this.scriptBody=c.substring(c.indexOf("{")+1,c.lastIndexOf("}")),this.scriptFile=void 0}else this.scriptArgs=void 0,this.scriptBody=void 0,this.scriptFile=a};j.prototype={getParameter:function(){return this.param},setParameter:function(a){this.param=a},getImportScripts:function(){return this.importScripts},setImportScripts:function(a){this.importScripts=a},getFunction:function(){return this.scriptArgs?{args:this.scriptArgs,body:this.scriptBody}:void 0},getScriptFile:function(){return this.scriptFile},functionallyEquals:function(b){return b&&b instanceof j&&a(b.scriptArgs,this.scriptArgs)&&b.body==this.body&&b.scriptFile==this.scriptFile},triggerDone:function(a){c(this.callbacksDone,[a])},triggerError:function(a){c(this.callbacksError,[a])},done:function(a){return b(this.callbacksDone,a),this},error:function(a){return b(this.callbacksError,a),this}};var k=function(a){this.threadPool=a,this.worker=void 0,this.currentJob=void 0,this.lastJob=void 0};k.prototype={terminate:function(){this.worker&&(this.worker.terminate(),this.worker=void 0)},run:function(a){function b(a){f.currentJob.triggerDone(a.data),f.threadPool.triggerDone(a.data),d()}function c(a){f.currentJob.triggerError(a),f.threadPool.triggerError(a),d()}function d(){f.currentJob=void 0,f.lastJob=a,f.threadPool._threadDone(f)}var f=this,g=!0;this.currentJob=a,this.worker&&(this.lastJob&&this.lastJob.functionallyEquals(a)?g=!1:(this.worker.terminate(),this.worker=void 0)),a.getScriptFile()?(g&&(this.worker=new Worker(a.getScriptFile()),this.worker.addEventListener("message",b,!1),this.worker.addEventListener("error",c,!1)),this.worker.postMessage(a.getParameter())):(g&&(this.worker=new Worker(e),this.worker.addEventListener("message",b,!1),this.worker.addEventListener("error",c,!1)),this.worker.postMessage({"function":a.getFunction(),importScripts:a.getImportScripts(),parameter:a.getParameter()}))}};var l=function(a){a=a||l.defaultSize,this.size=a,this.pendingJobs=[],this.idleThreads=[],this.activeThreads=[],this.callbacksDone=[],this.callbacksError=[];for(var b=0;a>b;b++)this.idleThreads.push(new k(this))};l.prototype={terminateAll:function(){for(i=0;i<this.idleThreads.length;i++)this.idleThreads[i].terminate();for(i=0;i<this.activeThreads.length;i++)this.activeThreads[i]&&this.activeThreads[i].terminate()},run:function(){var a,b,c,d,e,f=[].slice.call(arguments);if(arguments.length<1)throw new Error("run(): Too less parameters.");if("string"==typeof f[0])a=f.shift();else{if("object"==typeof f[0]&&f[0]instanceof Array&&(c=f.shift()),!(f.length>0&&"function"==typeof f[0]))throw new Error("run(): Missing obligatory thread logic function.");b=f.shift()}if(f.length>0&&"function"!=typeof f[0]&&(d=f.shift()),f.length>0&&"function"==typeof f[0]&&(e=f.shift()),f.length>0)throw new Error("run(): Unrecognized parameters: "+f);var g;return a?g=new j(a,d):(g=new j(b,d),c&&c.length>0&&g.setImportScripts(c)),e&&g.done(e),this.pendingJobs.push(g),this.runJobs(),g},runJobs:function(){if(this.idleThreads.length>0&&this.pendingJobs.length>0){var a=this.idleThreads.shift();this.activeThreads.push(a);var b=this.pendingJobs.shift();a.run(b)}},_threadDone:function(a){this.idleThreads.push(a),delete this.activeThreads[this.activeThreads.indexOf(a)],this.runJobs()},triggerDone:function(a){c(this.callbacksDone,[a])},triggerError:function(a){c(this.callbacksError,[a])},clearDone:function(){this.callbacksDone=[]},done:function(a){return b(this.callbacksDone,a),this},error:function(a){return b(this.callbacksError,a),this}},l.defaultSize=8,"function"==typeof define?define([],l):"object"==typeof window&&(window.ThreadPool=l)}();
+(function() {
+  var clearOutput, outputString, val_binary_64bits;
+
+  outputString = "";
+
+  val_binary_64bits = /^[0-1]{64}$/;
+
+  $(document).ready(function() {
+    $('#des-form').submit(function(event) {
+      return event.preventDefault();
+    });
+    $("input[tag='encrypt']").click(function() {
+      var ciphered, key, plaintext;
+      clearOutput();
+      plaintext = $("#des-form input[name ='plaintext']").val();
+      key = $("#des-form input[name ='key']").val();
+      if (!val_binary_64bits.test(plaintext)) {
+        $("#plain_alert").html("Invalid Input, plaintext must be 64 bits binary code");
+      }
+      if (!val_binary_64bits.test(key)) {
+        return $("#key_alert").html("invalid key input");
+      } else {
+        ciphered = DesCipher.encrypt(plaintext, key);
+        $('#encrypt').html(ciphered);
+        return $("#output_log").val(outputString);
+      }
+    });
+    return $("input[tag='decrypt']").click(function() {
+      var ciphered, decrypted, key;
+      clearOutput();
+      ciphered = $("#des-form input[name ='ciphertext']").val();
+      key = $("#des-form input[name ='key']").val();
+      if (!val_binary_64bits.test(ciphered)) {
+        return $('#cipher_alert').html("Invalid input, must be 64 bits binary code");
+      } else {
+        decrypted = DesCipher.decrypt(ciphered, key);
+        return $("#decrypt").html(decrypted);
+      }
+    });
+  });
+
+  clearOutput = function() {
+    $('#encrypt').html("");
+    $("#decrypt").html("");
+    $("#output_log").val("");
+    $("#key_alert").html("");
+    $("#cipher_alert").html("");
+    return outputString = "";
+  };
+
+  this.DesCipher = (function() {
+    var beautifyOutput, fFunction, permutate, sbox, toASCII, toBinary, xor;
+
+    function DesCipher() {}
+
+    DesCipher.encrypt = function(plaintext, key) {
+      var ciphered, i, leftBits, rightBits, tmp, _i;
+      plaintext = permutate(plaintext, IP);
+      leftBits = plaintext.substr(0, 32);
+      rightBits = plaintext.substr(32, 32);
+      key = permutate(key, PC1);
+      for (i = _i = 1; _i <= 16; i = ++_i) {
+        outputString += "Round " + i + "\n";
+        key = key.substr(0, 28).rotate(SHIFT[i - 1]) + key.substr(28, 28).rotate(SHIFT[i - 1]);
+        tmp = leftBits;
+        leftBits = rightBits;
+        rightBits = xor(fFunction(rightBits, permutate(key, PC2)), tmp);
+        outputString += "" + (beautifyOutput(leftBits + rightBits)) + "\n\n";
+      }
+      ciphered = permutate(rightBits + leftBits, FP);
+      outputString += "\n\nOutput: \n" + (beautifyOutput(ciphered));
+      return beautifyOutput(ciphered);
+    };
+
+    DesCipher.decrypt = function(ciphered, key) {
+      var decrypted, i, leftBits, rightBits, tmp, _i;
+      key = $("#des-form input[name ='key']").val();
+      key = permutate(key, PC1);
+      ciphered = permutate(ciphered, FP.inverse());
+      rightBits = ciphered.substr(0, 32);
+      leftBits = ciphered.substr(32, 32);
+      for (i = _i = 16; _i >= 1; i = --_i) {
+        if (i < 16) {
+          key = key.substr(0, 28).rotate(-RSHIFT[16 - i]) + key.substr(28, 28).rotate(-RSHIFT[16 - i]);
+        }
+        tmp = rightBits;
+        rightBits = leftBits;
+        leftBits = xor(fFunction(leftBits, permutate(key, PC2)), tmp);
+      }
+      decrypted = permutate(leftBits + rightBits, FP);
+      return beautifyOutput(decrypted);
+    };
+
+    toBinary = function(chars) {
+      var bits, i, _i, _ref;
+      bits = "";
+      for (i = _i = 0, _ref = chars.length - 1; 0 <= _ref ? _i <= _ref : _i >= _ref; i = 0 <= _ref ? ++_i : --_i) {
+        bits += parseInt(chars[i].charCodeAt(0).toString(2)).padLeft(8).toString();
+      }
+      return bits;
+    };
+
+    toASCII = function(bits) {
+      var i, word, _i;
+      word = "";
+      for (i = _i = 0; _i <= 7; i = ++_i) {
+        word += parseInt(bits.substr(i * 8, 8), 2).toString(16);
+      }
+      return word;
+    };
+
+    beautifyOutput = function(bits) {
+      var i, output, _i;
+      output = "";
+      for (i = _i = 0; _i <= 7; i = ++_i) {
+        output += bits.substr(i * 8, 8) + " ";
+      }
+      return output;
+    };
+
+    permutate = function(bits, pTable) {
+      var i, permutated, _i, _ref;
+      permutated = "";
+      for (i = _i = 0, _ref = pTable.length - 1; 0 <= _ref ? _i <= _ref : _i >= _ref; i = 0 <= _ref ? ++_i : --_i) {
+        permutated += bits[pTable[i] - 1].toString();
+      }
+      return permutated;
+    };
+
+    xor = function(a, b) {
+      var i, xorrrr, _i, _ref;
+      xorrrr = "";
+      for (i = _i = 0, _ref = a.length - 1; 0 <= _ref ? _i <= _ref : _i >= _ref; i = 0 <= _ref ? ++_i : --_i) {
+        xorrrr += a[i] ^ b[i];
+      }
+      return xorrrr;
+    };
+
+    sbox = function(bits, sbox) {
+      var x, y;
+      x = bits.substr(1, 4);
+      y = bits[0] + bits[5];
+      return parseInt(parseInt(sbox[parseInt(x, 2) + parseInt(y, 2) * 16]).toString(2)).padLeft(4).toString();
+    };
+
+    fFunction = function(rightBits, key) {
+      var i, tmp, _i;
+      rightBits = permutate(rightBits, EP);
+      rightBits = xor(rightBits, key);
+      tmp = rightBits;
+      rightBits = "";
+      for (i = _i = 0; _i <= 7; i = ++_i) {
+        rightBits += sbox(tmp.substr(6 * i, 6), SBOX[i]);
+      }
+      rightBits = permutate(rightBits, RP);
+      return rightBits;
+    };
+
+    return DesCipher;
+
+  })();
+
+}).call(this);
+(function() {
+  $(document).ready(function() {
+    $('input[name="initial-vector"]').val(function() {
+      var i, str, _i;
+      str = "";
+      for (i = _i = 0; _i <= 63; i = ++_i) {
+        if (Math.random() > 0.5) {
+          str += "1";
+        } else {
+          str += "0";
+        }
+      }
+      return str;
+    });
+    return $('#block-form').submit(function(event) {
+      var imageHeight, imageWidth, img, imgObj, imgurl;
+      event.preventDefault();
+      imgurl = $("input[name=image-url]").val();
+      $("#ori-pic").attr("src", imgurl);
+      img = $("#ori-pic").get(0);
+      imgObj = new Image();
+      imgObj.src = imgurl;
+      imageWidth = 0;
+      imageHeight = 0;
+      return imgObj.onload = function() {
+        var arr, canvas, context, data, imgData, iv, key, lastIndex, pool, proccessThread, scaleRatio, str, url;
+        imageWidth = imgObj.width;
+        imageHeight = imgObj.height;
+        canvas = $("#proccessed-pic").get(0);
+        context = canvas.getContext("2d");
+        scaleRatio = parseInt(imageWidth / 150);
+        canvas.width = imageWidth / scaleRatio;
+        canvas.height = imageHeight / scaleRatio;
+        img.width = canvas.width;
+        img.height = canvas.height;
+        imageWidth = img.width;
+        imageHeight = img.height;
+        context.scale(1 / scaleRatio, 1 / scaleRatio);
+        context.drawImage(img, 0, 0);
+        imgData = context.getImageData(0, 0, canvas.width, canvas.height);
+        data = imgData.data;
+        key = $('input[name="block-key"]').val();
+        iv = $('input[name="initial-vector"]').val();
+        pool = new ThreadPool();
+        proccessThread = function(obj, done) {
+          var func;
+          func = function() {
+            var block, ciphered, i, j, str, url, xor, _i, _j, _k, _ref;
+            data = obj[0];
+            key = obj[1];
+            url = obj[2];
+            iv = obj[3];
+            xor = function(a, b) {
+              var i, xorrrr, _i, _ref;
+              xorrrr = "";
+              for (i = _i = 0, _ref = a.length - 1; 0 <= _ref ? _i <= _ref : _i >= _ref; i = 0 <= _ref ? ++_i : --_i) {
+                xorrrr += a[i] ^ b[i];
+              }
+              return xorrrr;
+            };
+            importScripts("" + url + "/javascripts/lib.js");
+            importScripts("" + url + "/javascripts/des.min.js");
+            for (i = _i = 0, _ref = data.length - 9; _i <= _ref; i = _i += 8) {
+              block = "";
+              for (j = _j = 0; _j <= 7; j = ++_j) {
+                str = parseInt(data[i + j].toString(2));
+                block += (Array(8 - String(str).length + 1).join('0') + str).toString();
+              }
+              ciphered = DesCipher.encrypt(xor(block, iv), key);
+              ciphered = ciphered.replace(/\s/g, "");
+              iv = ciphered;
+              for (j = _k = 0; _k <= 7; j = ++_k) {
+                data[i + j] = parseInt(ciphered.substr(j * 8, 8), 2);
+              }
+              if (i % 12344 === 0) {
+                console.log("" + i + ": " + ciphered);
+              }
+            }
+            return data;
+          };
+          return done(func());
+        };
+        arr = [];
+        str = document.URL;
+        lastIndex = str.lastIndexOf("/");
+        url = str.substr(0, lastIndex);
+        arr.push(data);
+        arr.push(key);
+        arr.push(url);
+        arr.push(iv);
+        return pool.run(proccessThread, arr).done(function(data) {
+          var i, _i, _ref;
+          canvas = document.getElementById("proccessed-pic");
+          context = canvas.getContext("2d");
+          console.log("" + imageWidth + ", " + imageHeight);
+          imgData = context.getImageData(0, 0, imageWidth, imageHeight);
+          for (i = _i = 0, _ref = data.length - 1; 0 <= _ref ? _i <= _ref : _i >= _ref; i = 0 <= _ref ? ++_i : --_i) {
+            imgData.data[i] = data[i];
+          }
+          console.log("done!");
+          return context.putImageData(imgData, 0, 0);
+        });
+      };
+    });
+  });
+
+}).call(this);
+(function() {
+  $("a[href*=#]:not([href=#])").click(function() {
+    var target;
+    if (location.pathname.replace(/^\//, "") === this.pathname.replace(/^\//, "") && location.hostname === this.hostname) {
+      target = $(this.hash);
+      target = (target.length ? target : $("[name=" + this.hash.slice(1) + "]"));
+      if (target.length) {
+        $("html,body").animate({
+          scrollTop: target.offset().top - 380
+        }, 850);
+        return false;
+      }
+    }
+  });
+
+}).call(this);
+IP=[58,50,42,34,26,18,10,2,60,52,44,36,28,20,12,4,62,54,46,38,30,22,14,6,64,56,48,40,32,24,16,8,57,49,41,33,25,17,9,1,59,51,43,35,27,19,11,3,61,53,45,37,29,21,13,5,63,55,47,39,31,23,15,7];FP=[40,8,48,16,56,24,64,32,39,7,47,15,55,23,63,31,38,6,46,14,54,22,62,30,37,5,45,13,53,21,61,29,36,4,44,12,52,20,60,28,35,3,43,11,51,19,59,27,34,2,42,10,50,18,58,26,33,1,41,9,49,17,57,25];EP=[32,1,2,3,4,5,4,5,6,7,8,9,8,9,10,11,12,13,12,13,14,15,16,17,16,17,18,19,20,21,20,21,22,23,24,25,24,25,26,27,28,29,28,29,30,31,32,1];RP=[16,7,20,21,29,12,28,17,1,15,23,26,5,18,31,10,2,8,24,14,32,27,3,9,19,13,30,6,22,11,4,25];S1=[14,4,13,1,2,15,11,8,3,10,6,12,5,9,0,7,0,15,7,4,14,2,13,1,10,6,12,11,9,5,3,8,4,1,14,8,13,6,2,11,15,12,9,7,3,10,5,0,15,12,8,2,4,9,1,7,5,11,3,14,10,0,6,13];S2=[15,1,8,14,6,11,3,4,9,7,2,13,12,0,5,10,3,13,4,7,15,2,8,14,12,0,1,10,6,9,11,5,0,14,7,11,10,4,13,1,5,8,12,6,9,3,2,15,13,8,10,1,3,15,4,2,11,6,7,12,0,5,14,9];S3=[10,0,9,14,6,3,15,5,1,13,12,7,11,4,2,8,13,7,0,9,3,4,6,10,2,8,5,14,12,11,15,1,13,6,4,9,8,15,3,0,11,1,2,12,5,10,14,7,1,10,13,0,6,9,8,7,4,15,14,3,11,5,2,12];S4=[7,13,14,3,0,6,9,10,1,2,8,5,11,12,4,15,13,8,11,5,6,15,0,3,4,7,2,12,1,10,14,9,10,6,9,0,12,11,7,13,15,1,3,14,5,2,8,4,3,15,0,6,10,1,13,8,9,4,5,11,12,7,2,14];S5=[2,12,4,1,7,10,11,6,8,5,3,15,13,0,14,9,14,11,2,12,4,7,13,1,5,0,15,10,3,9,8,6,4,2,1,11,10,13,7,8,15,9,12,5,6,3,0,14,11,8,12,7,1,14,2,13,6,15,0,9,10,4,5,3];S6=[12,1,10,15,9,2,6,8,0,13,3,4,14,7,5,11,10,15,4,2,7,12,9,5,6,1,13,14,0,11,3,8,9,14,15,5,2,8,12,3,7,0,4,10,1,13,11,6,4,3,2,12,9,5,15,10,11,14,1,7,6,0,8,13];S7=[4,11,2,14,15,0,8,13,3,12,9,7,5,10,6,1,13,0,11,7,4,9,1,10,14,3,5,12,2,15,8,6,1,4,11,13,12,3,7,14,10,15,6,8,0,5,9,2,6,11,13,8,1,4,10,7,9,5,0,15,14,2,3,12];S8=[3,2,8,4,6,15,11,1,10,9,3,14,5,0,12,7,1,15,13,8,10,3,7,4,12,5,6,11,0,14,9,2,7,11,4,1,9,12,14,2,0,6,10,13,15,3,5,8,2,1,14,7,4,10,8,13,15,12,9,0,3,5,6,11];SBOX=[S1,S2,S3,S4,S5,S6,S7,S8];PC1=[57,49,41,33,25,17,9,1,58,50,42,34,26,18,10,2,59,51,43,35,27,19,11,3,60,52,44,36,63,55,47,39,31,23,15,7,62,54,46,38,30,22,14,6,61,53,45,37,29,21,13,5,28,20,12,4];PC2=[14,17,11,24,1,5,3,28,15,6,21,10,23,19,12,4,26,8,16,7,27,20,13,2,41,52,31,37,47,55,30,40,51,45,33,48,44,49,39,56,34,53,46,42,50,36,29,32];SHIFT=[1,1,2,2,2,2,2,2,1,2,2,2,2,2,2,1];RSHIFT=[2,1,2,2,2,2,2,2,1,2,2,2,2,2,2,1]
+
+this.DesCipher = (function() {
+  var beautifyOutput, fFunction, permutate, sbox, toASCII, toBinary, xor;
+  var outputString = "";
+  function DesCipher() {}
+
+  DesCipher.encrypt = function(plaintext, key) {
+    var ciphered, i, leftBits, rightBits, tmp, _i;
+    plaintext = permutate(plaintext, IP);
+    leftBits = plaintext.substr(0, 32);
+    rightBits = plaintext.substr(32, 32);
+    key = permutate(key, PC1);
+    for (i = _i = 1; _i <= 16; i = ++_i) {
+      outputString += "Round " + i + "\n";
+      key = key.substr(0, 28).rotate(SHIFT[i - 1]) + key.substr(28, 28).rotate(SHIFT[i - 1]);
+      tmp = leftBits;
+      leftBits = rightBits;
+      rightBits = xor(fFunction(rightBits, permutate(key, PC2)), tmp);
+      outputString += "" + (beautifyOutput(leftBits + rightBits)) + "\n\n";
+    }
+    ciphered = permutate(rightBits + leftBits, FP);
+    outputString += "\n\nOutput: \n" + (beautifyOutput(ciphered));
+    return beautifyOutput(ciphered);
+  };
+
+  DesCipher.decrypt = function(ciphered, key) {
+    var decrypted, i, leftBits, rightBits, tmp, _i;
+    key = $("#des-form input[name ='key']").val();
+    key = permutate(key, PC1);
+    ciphered = permutate(ciphered, FP.inverse());
+    rightBits = ciphered.substr(0, 32);
+    leftBits = ciphered.substr(32, 32);
+    for (i = _i = 16; _i >= 1; i = --_i) {
+      if (i < 16) {
+        key = key.substr(0, 28).rotate(-RSHIFT[16 - i]) + key.substr(28, 28).rotate(-RSHIFT[16 - i]);
+      }
+      tmp = rightBits;
+      rightBits = leftBits;
+      leftBits = xor(fFunction(leftBits, permutate(key, PC2)), tmp);
+    }
+    decrypted = permutate(leftBits + rightBits, FP);
+    return beautifyOutput(decrypted);
+  };
+
+  toBinary = function(chars) {
+    var bits, i, _i, _ref;
+    bits = "";
+    for (i = _i = 0, _ref = chars.length - 1; 0 <= _ref ? _i <= _ref : _i >= _ref; i = 0 <= _ref ? ++_i : --_i) {
+      bits += parseInt(chars[i].charCodeAt(0).toString(2)).padLeft(8).toString();
+    }
+    return bits;
+  };
+
+  toASCII = function(bits) {
+    var i, word, _i;
+    word = "";
+    for (i = _i = 0; _i <= 7; i = ++_i) {
+      word += parseInt(bits.substr(i * 8, 8), 2).toString(16);
+    }
+    return word;
+  };
+
+  beautifyOutput = function(bits) {
+    var i, output, _i;
+    output = "";
+    for (i = _i = 0; _i <= 7; i = ++_i) {
+      output += bits.substr(i * 8, 8) + " ";
+    }
+    return output;
+  };
+
+  permutate = function(bits, pTable) {
+    var i, permutated, _i, _ref;
+    permutated = "";
+    for (i = _i = 0, _ref = pTable.length - 1; 0 <= _ref ? _i <= _ref : _i >= _ref; i = 0 <= _ref ? ++_i : --_i) {
+      permutated += bits[pTable[i] - 1].toString();
+    }
+    return permutated;
+  };
+
+  xor = function(a, b) {
+    var i, xorrrr, _i, _ref;
+    xorrrr = "";
+    for (i = _i = 0, _ref = a.length - 1; 0 <= _ref ? _i <= _ref : _i >= _ref; i = 0 <= _ref ? ++_i : --_i) {
+      xorrrr += a[i] ^ b[i];
+    }
+    return xorrrr;
+  };
+
+  sbox = function(bits, sbox) {
+    var x, y;
+    x = bits.substr(1, 4);
+    y = bits[0] + bits[5];
+    return parseInt(parseInt(sbox[parseInt(x, 2) + parseInt(y, 2) * 16]).toString(2)).padLeft(4).toString();
+  };
+
+  fFunction = function(rightBits, key) {
+    var i, tmp, _i;
+    rightBits = permutate(rightBits, EP);
+    rightBits = xor(rightBits, key);
+    tmp = rightBits;
+    rightBits = "";
+    for (i = _i = 0; _i <= 7; i = ++_i) {
+      rightBits += sbox(tmp.substr(6 * i, 6), SBOX[i]);
+    }
+    rightBits = permutate(rightBits, RP);
+    return rightBits;
+  };
+
+  return DesCipher;
+
+})();
+
+
+
 
 
 

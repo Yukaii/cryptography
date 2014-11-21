@@ -1,5 +1,5 @@
 (function() {
-  var DesCipher, clearOutput, outputString, val_binary_64bits;
+  var clearOutput, outputString, val_binary_64bits;
 
   outputString = "";
 
@@ -48,7 +48,7 @@
     return outputString = "";
   };
 
-  DesCipher = (function() {
+  this.DesCipher = (function() {
     var beautifyOutput, fFunction, permutate, sbox, toASCII, toBinary, xor;
 
     function DesCipher() {}
