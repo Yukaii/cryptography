@@ -9,9 +9,10 @@
   = text_field_tag 'block-key', :value => '0011101100111000100110000011011100010101001000001111011101011110'
   %p
   = submit_tag 'Encrypt!', :tag => 'encrypt'
+%p
 
-%img{:id => 'ori-pic', :crossorigin => 'anonymous'}
+  %img{:id => 'ori-pic', :crossorigin => 'anonymous'}
 
--# %canvas{:id => 'original-pic'}
-%canvas{:id => 'proccessed-pic'}
+  -# %canvas{:id => 'original-pic'}
+  %canvas{:id => 'proccessed-pic'}
 
