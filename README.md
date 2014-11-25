@@ -15,7 +15,8 @@ open [des](https://github.com/yukaihuang1993/cryptography/des.html) page
 
 ###Homework 3 Des Graphics Block Cipher
 open [block](https://github.com/yukaihuang1993/cryptography/block.html) page
-![result](/images/block-result.png)
+
+![result](/source/images/block-result.png)
 
 Upload image to imgur and paste image direct link. Hit the cipher button, and wait about 7 seconds, then get the ciphered result.
 
