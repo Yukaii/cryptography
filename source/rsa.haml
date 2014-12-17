@@ -1,0 +1,12 @@
+%h1 RSA-768
+
+%ul
+
+= form_tag '#', :id => 'rsa-form' do
+  %p message to be encrypted
+  = text_field_tag 'message-bits'
+  %br 
+  = submit_tag 'Encrypt!', :tag => 'encrypt'
+
+
+%textarea#result_text{:rows => '20', :cols => '25'}

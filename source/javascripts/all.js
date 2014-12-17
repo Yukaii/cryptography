@@ -7,5 +7,5 @@
 //= require "threadpool.min.js"
 //= require "des.js"
 //= require "block.js"
-
+//= require "rsa.js"
 // = require_tree .
